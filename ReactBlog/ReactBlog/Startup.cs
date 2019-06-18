@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -8,18 +10,20 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.IdentityModel.Tokens;
 using ReactBlog.Core.Interfaces;
 using ReactBlog.Infrastructure.Data;
 using ReactBlog.Infrastructure.Identity;
 using ReactBlog.Infrastructure.Logging;
 using ReactBlog.Infrastructure.Services;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Text;
 
 namespace ReactBlog
 {
     public class Startup
     {
-        private IServiceCollection _services;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,35 +31,30 @@ namespace ReactBlog
 
         public IConfiguration Configuration { get; }
 
-        public void ConfigureDevelopmentServices(IServiceCollection services)
-        {
-            // use in-memory database
-            //ConfigureInMemoryDatabases(services);
-
-            // use real database
-             ConfigureProductionServices(services);
-        }
-
-
-        public void ConfigureProductionServices(IServiceCollection services)
-        {
-            // use real database
-            // Requires LocalDB which can be installed with SQL Server Express 2016
-            // https://www.microsoft.com/en-us/download/details.aspx?id=54284
-            services.AddDbContext<BlogContext>(c =>
-                c.UseSqlServer(Configuration.GetConnectionString("BlogConnection")));
-
-            // Add Identity DbContext
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("BlogConnection")));
-
-            ConfigureServices(services);
-        }
-
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            CreateIdentityIfNotCreated(services);
+
+            services.AddCors(op => op.AddPolicy("Cors", builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); }));
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            });
+
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = context => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
@@ -63,6 +62,27 @@ namespace ReactBlog
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddOptions();
+
+            services.AddDbContext<BlogContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BlogConnection")));
+
+            var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("bd5b0c50-fe1f-4fcb-82b9-56999e82e54f"));
+            services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(cfg => {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+                cfg.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    IssuerSigningKey = signinKey,
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    ValidateLifetime = false,
+                    ValidateIssuerSigningKey = true
+                };
+
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -76,10 +96,26 @@ namespace ReactBlog
             });
         }
 
+        private static void CreateIdentityIfNotCreated(IServiceCollection services)
+        {
+            var sp = services.BuildServiceProvider();
+            using (var scope = sp.CreateScope())
+            {
+                var existingUserManager = scope.ServiceProvider
+                    .GetService<UserManager<ApplicationUser>>();
+                if (existingUserManager == null)
+                {
+                    services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BlogContext>();
+                }
+            }
+        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors("Cors");
+            app.UseDefaultFiles();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

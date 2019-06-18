@@ -26,11 +26,9 @@ namespace ReactBlog
                 var loggerFactory = services.GetRequiredService<ILoggerFactory>();
                 try
                 {
-                    var catalogContext = services.GetRequiredService<BlogContext>();
-                    await BlogContextSeed.SeedAsync(catalogContext, loggerFactory);
-
+                    var blogContext = services.GetRequiredService<BlogContext>();
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    await AppIdentityDbContextSeed.SeedAsync(userManager);
+                    await BlogContextSeed.SeedAsync(blogContext, userManager, loggerFactory);
                 }
                 catch (Exception ex)
                 {
