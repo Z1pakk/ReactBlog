@@ -8,6 +8,9 @@
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "jquery": "3.3.1",
+    "jss": "^9.8.7",
+    "jss-plugin-template": "^10.0.0-alpha.7",
+    "prop-types": "^15.7.2",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-redux": "^5.0.6",
@@ -19,7 +22,8 @@
     "reactstrap": "^6.3.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "validator": "^11.0.0"
   },
   "devDependencies": {
     "ajv": "^6.0.0",
