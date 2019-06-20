@@ -11,7 +11,12 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import { Grid, Link } from "@material-ui/core";
+import {
+  Grid,
+  Link,
+  FormHelperText,
+  CircularProgress
+} from "@material-ui/core";
 import Validator from "validator";
 
 const styles = {
@@ -31,6 +36,15 @@ const styles = {
   },
   loginButton: {
     margin: "24px 0px 16px"
+  },
+  error: {
+    borderStyle: "solid",
+    borderWidth: "1px",
+    padding: "14px 14px",
+    borderColor: "#f50057",
+    borderRadius: "4px",
+    backgroundColor: "#f50057",
+    color: "white"
   }
 };
 
@@ -59,7 +73,10 @@ export class LoginForm extends Component {
     const errors = this.validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
-      this.props.submit(this.state.data);
+      this.setState({ loading: true });
+      this.props.submit(this.state.data).catch(err => {
+        this.setState({ errors: err.response.data, loading: false });
+      });
     }
   };
 
@@ -71,7 +88,7 @@ export class LoginForm extends Component {
   };
 
   render() {
-    const { data, showPassword, errors } = this.state;
+    const { data, showPassword, errors, loading } = this.state;
     const { classes } = this.props;
     return (
       <Container maxWidth="xs" component="main">
@@ -83,6 +100,12 @@ export class LoginForm extends Component {
             Sign in
           </Typography>
           <form className={classes.formstyle}>
+            {errors.global && (
+              <FormHelperText component="div" className={classes.error}>
+                <Typography variant="h5">Something went wrong!</Typography>
+                <Typography variant="body1">{errors.global}</Typography>
+              </FormHelperText>
+            )}
             <TextField
               id="email"
               label="Email*"
@@ -126,8 +149,17 @@ export class LoginForm extends Component {
               className={classes.loginButton}
               fullWidth
               onClick={this.handleSubmit}
+              {...(loading ? { disabled: true } : {})}
             >
-              SIGN IN
+              {loading ? (
+                <CircularProgress
+                  size={30}
+                  color="primary"
+                  variant="indeterminate"
+                /> // Size 14 works pretty well
+              ) : (
+                <Typography>SIGN IN</Typography>
+              )}
             </Button>
             <Grid container>
               <Grid item xs={true}>

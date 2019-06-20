@@ -18,6 +18,9 @@ using ReactBlog.Infrastructure.Identity;
 using ReactBlog.Infrastructure.Logging;
 using ReactBlog.Infrastructure.Services;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace ReactBlog
@@ -86,7 +89,17 @@ namespace ReactBlog
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1",
+                    new Info {
+                        Version = "v1",
+                        Title = "Api ReactBlog",
+                        TermsOfService="None",
+                        Description="Api for React Blog"
+                    });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
             // In production, the React files will be served from this directory
@@ -140,7 +153,7 @@ namespace ReactBlog
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ReactBlog");
             });
 
             app.UseMvc(routes =>
