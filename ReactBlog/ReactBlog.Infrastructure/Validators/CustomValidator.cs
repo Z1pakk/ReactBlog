@@ -36,7 +36,7 @@ namespace ReactBlog.Infrastructure.Validators
         {
             var errors = result.Errors
                 .ToDictionary(
-                    kvp => "invalid",
+                    kvp => "global",
                     kvp => kvp.Description
                 );
             return errors;

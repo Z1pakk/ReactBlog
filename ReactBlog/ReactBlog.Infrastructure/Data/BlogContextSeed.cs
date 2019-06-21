@@ -30,7 +30,13 @@ namespace ReactBlog.Infrastructure.Data
                 }
                 if (!blogContext.Users.Any())
                 {
-                    ApplicationUser user = new ApplicationUser() { Email = "wladik420@gmail.com", UserName = "wladik420@gmail.com" };
+                    ApplicationUser user = new ApplicationUser()
+                    { Email = "userexample@gmail.com",
+                      UserName = "userexample@gmail.com",
+                      FirstName="User",
+                      LastName="Example",
+                      IsPromotions=false
+                    };
                     await usermanager.CreateAsync(
                         user,
                         "5632wlad"

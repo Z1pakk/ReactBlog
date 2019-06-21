@@ -16,16 +16,18 @@ const HomePage = ({ isAuthentificated, logout }) => (
       {isAuthentificated ? (
         <button onClick={() => logout()}>Logout</button>
       ) : (
-        <Link component={RouterLink} to="/login">
-          Login
-        </Link>
+        <div>
+          <Link component={RouterLink} to="/login">
+            Login
+          </Link>
+          <Link component={RouterLink} to="/signup">
+            Sign up
+          </Link>
+        </div>
       )}
     </Typography>
   </Container>
 );
-HomePage.contextTypes = {
-  router: PropTypes.object
-};
 HomePage.propTypes = {
   isAuthentificated: PropTypes.bool.isRequired,
   logout: PropTypes.func.isRequired

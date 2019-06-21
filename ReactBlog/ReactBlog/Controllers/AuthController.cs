@@ -50,7 +50,7 @@ namespace ReactBlog.Controllers
         ///     }
         ///     
         /// </remarks>
-        /// <returns> JWT token wich cotains additional inforation </returns>
+        /// <returns> JWT token wich cotains additional information </returns>
         /// <response code="200"> Successed login.Return a JWT token </response>
         /// <reponse code="400"> Return errors </reponse>
         [HttpPost("login")]
@@ -78,6 +78,59 @@ namespace ReactBlog.Controllers
             string token = await CreateTokenAsync(user);
             return Ok(token);
         }
+
+        /// <summary>
+        /// Register in a system and automate login
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     POST /auth/register
+        ///     {
+        ///         "firstName":"Vlad",
+        ///         "lastNane":"Vladovich"
+        ///         "email":"example@gmail.com",
+        ///         "password":"examplePass"
+        ///         "confirmPassword":"examlePass"
+        ///     }
+        ///     
+        /// </remarks>
+        /// <returns> JWT token wich cotains additional information </returns>
+        /// <response code="201"> Successed created user and login in system.Return a JWT token </response>
+        /// <reponse code="400"> Return errors </reponse>
+        [HttpPost("register")]
+        [AllowAnonymous]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> RegisterAsync([FromBody]RegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = CustomValidator.GetErrorsByModel(ModelState);
+                return BadRequest(errors);
+            }
+            var user = new ApplicationUser
+            { UserName = model.Email,
+              Email = model.Email,
+              FirstName=model.FirstName,
+              LastName=model.LastName,
+              IsPromotions=model.Promotions
+            };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+            {
+                var errors = CustomValidator.GetErrorsByIdentityResult(result);
+                return BadRequest(errors);
+            }
+            result= await _userManager.AddToRoleAsync(user, "User");
+            if (!result.Succeeded)
+            {
+                var errors = CustomValidator.GetErrorsByIdentityResult(result);
+                return BadRequest(errors);
+            }
+            return await this.LoginAsync(new LoginViewModel() { Email = model.Email, Password = model.Password });
+        }
+
+
         private async Task<string> CreateTokenAsync(ApplicationUser user)
         {
             var isAdmin = await _userManager.IsInRoleAsync(user, Roles.Admin);

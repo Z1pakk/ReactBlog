@@ -11,6 +11,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import { Link as RouterLink } from "react-router-dom";
 import {
   Grid,
   Link,
@@ -108,7 +109,7 @@ export class LoginForm extends Component {
             )}
             <TextField
               id="email"
-              label="Email*"
+              label="Email Address *"
               value={data.email}
               onChange={this.handleChange("email")}
               margin="normal"
@@ -122,7 +123,7 @@ export class LoginForm extends Component {
               id="password"
               variant="outlined"
               type={showPassword ? "text" : "password"}
-              label="Password*"
+              label="Password *"
               value={data.password}
               onChange={this.handleChange("password")}
               fullWidth
@@ -168,7 +169,7 @@ export class LoginForm extends Component {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link component={RouterLink} to="/signup" variant="body2">
                   Don't have and account? Sign up!
                 </Link>
               </Grid>
@@ -181,6 +182,7 @@ export class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-  submit: PropTypes.func.isRequired
+  submit: PropTypes.func.isRequired,
+  classes: PropTypes.object.isRequired
 };
 export default withStyles(styles)(LoginForm);

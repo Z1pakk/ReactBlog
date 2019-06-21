@@ -9,4 +9,8 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Ardalis.GuardClauses" Version="1.2.8" />
+  </ItemGroup>
+
 </Project>

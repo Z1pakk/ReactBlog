@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactBlog.Infrastructure.Data;
 
 namespace ReactBlog.Infrastructure.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20190621131235_Edit ApplicationUser entity")]
+    partial class EditApplicationUserentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,15 +148,11 @@ namespace ReactBlog.Infrastructure.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                    b.Property<string>("FirstName");
 
                     b.Property<bool>("IsPromotions");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                    b.Property<string>("LastName");
 
                     b.Property<bool>("LockoutEnabled");
 

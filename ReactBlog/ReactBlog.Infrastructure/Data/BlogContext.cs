@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ReactBlog.Core.Entities.UserAggregate;
 using ReactBlog.Infrastructure.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,10 +14,20 @@ namespace ReactBlog.Infrastructure.Data
         public BlogContext(DbContextOptions<BlogContext> options) : base(options)
         {
         }
+
+        // TODO: SET DbSet<T> for all tables
+        //public DbSet<User> Users { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // TODO: SET DbSet<T> for all tables
+            // TODO: Configure entities
+            //builder.Entity<User>(ConfigureUser);
         }
+        //private void ConfigureUser(EntityTypeBuilder<User> builder)
+        //{
+        //    builder.HasKey(t => t.Id);
+
+        //    builder.ToTable("tbl_Users");
+        //}
     }
 }

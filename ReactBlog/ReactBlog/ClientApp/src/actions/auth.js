@@ -30,3 +30,6 @@ export const logout = () => dispatch => {
   setAuthorizationToken(false);
   dispatch(userLoggedOut());
 };
+export const signup = () => dispatch => {
+  return true;
+};
