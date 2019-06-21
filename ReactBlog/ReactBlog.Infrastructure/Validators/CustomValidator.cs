@@ -79,12 +79,12 @@ namespace ReactBlog.Infrastructure.Validators
                 // Username or password is incorrect.
                 if (user == null)
                 {
-                    errors.Add("email", "Email is incorrect");
+                    errors.Add("global", "Email is incorrect");
                     // Username is incorrect.
                 }
                 else
                 {
-                    errors.Add("password", "Password is incorrect");
+                    errors.Add("password", "Invalid credentials");
                     // Password is incorrect.
                 }
             }

@@ -153,7 +153,7 @@ export class LoginForm extends Component {
             >
               {loading ? (
                 <CircularProgress
-                  size={30}
+                  size={25}
                   color="primary"
                   variant="indeterminate"
                 /> // Size 14 works pretty well
