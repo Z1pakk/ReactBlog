@@ -12,16 +12,19 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { Link as RouterLink } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 import {
   Grid,
   Link,
   FormHelperText,
   CircularProgress,
   FormControlLabel,
-  Checkbox
+  Checkbox,
+  FormControl
 } from "@material-ui/core";
 import Validator from "validator";
 
+const recaptchaRef = React.createRef();
 const styles = {
   formContainer: {
     display: "flex",
@@ -60,7 +63,8 @@ export class SignUpForm extends Component {
       lastName: "",
       password: "",
       confirmPassword: "",
-      promotions: false
+      promotions: false,
+      recaptchaToken: ""
     },
     showPassword: false,
     loading: false,
@@ -99,6 +103,7 @@ export class SignUpForm extends Component {
       this.setState({ loading: true });
       this.props.submit(this.state.data).catch(err => {
         this.setState({ errors: err.response.data, loading: false });
+        recaptchaRef.current.reset();
       });
     }
   };
@@ -110,12 +115,18 @@ export class SignUpForm extends Component {
     if (!data.lastName) errors.lastName = "Can't be blank!";
     if (!data.password) errors.password = "Can't be blank!";
     if (!data.confirmPassword) errors.confirmPassword = "Can't be blank!";
+    if (!data.recaptchaToken) errors.recaptchaToken = "Verify captcha!";
     if (!Validator.equals(data.password, data.confirmPassword)) {
       errors.confirmPassword = "Confirm password is not equals!";
     }
     return errors;
   };
-
+  verifyCallback = value => {
+    // Here you will get the final recaptchaToken!!!
+    this.setState({
+      data: { ...this.state.data, recaptchaToken: value }
+    });
+  };
   render() {
     const { data, loading, errors, showPassword } = this.state;
     const { classes } = this.props;
@@ -231,6 +242,24 @@ export class SignUpForm extends Component {
                   }
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <FormControl
+                  className={classes.formControl}
+                  error={!!errors.recaptchaToken}
+                >
+                  <ReCAPTCHA
+                    sitekey="6LeeFaoUAAAAABSGfp5O5OVzD1sXK3AemQefh9Fw"
+                    ref={recaptchaRef}
+                    error="awdaw"
+                    onChange={this.verifyCallback}
+                  />
+                  {!!errors.recaptchaToken && (
+                    <FormHelperText id="component-error-text">
+                      {errors.recaptchaToken}
+                    </FormHelperText>
+                  )}
+                </FormControl>
               </Grid>
             </Grid>
             <Button

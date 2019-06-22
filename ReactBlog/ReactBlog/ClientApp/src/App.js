@@ -7,12 +7,16 @@ import SignUpPage from "./components/pages/SignUpPage";
 import UserRoute from "./components/routes/UserRoute";
 import GuestRoute from "./components/routes/GuestRoute";
 
-const App = () => (
-  <div>
-    <Route path="/" exact component={HomePage} />
-    <GuestRoute path="/login" component={LoginPage} />
-    <GuestRoute path="/signup" component={SignUpPage} />
-    <UserRoute path="/dashboard" exact component={DashboardPage} />
-  </div>
-);
+export class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <Route path="/" exact component={HomePage} />
+        <GuestRoute path="/login" component={LoginPage} />
+        <GuestRoute path="/signup" component={SignUpPage} />
+        <UserRoute path="/dashboard" exact component={DashboardPage} />
+      </div>
+    );
+  }
+}
 export default App;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ReactBlog.CustomAttributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -37,5 +38,9 @@ namespace ReactBlog.ViewModels
 
 
         public bool Promotions { get; set; }
+
+        [Required]
+        [RecaptchaValid]
+        public string RecaptchaToken { get; set; }
     }
 }
