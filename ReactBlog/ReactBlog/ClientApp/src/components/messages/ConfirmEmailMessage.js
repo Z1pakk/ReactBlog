@@ -1,6 +1,6 @@
 import React from "react";
 import { Alert } from "reactstrap";
-import { Container } from "@material-ui/core";
+import { Container, Button } from "@material-ui/core";
 
 const ConfirmEmailMessage = () => {
   return (
@@ -9,6 +9,9 @@ const ConfirmEmailMessage = () => {
         <h4 className="alert-heading">
           Please, verify your email to unlock awesomeness!
         </h4>
+        <Button variant="contained" color="primary">
+          Resend confirm message
+        </Button>
       </Alert>
     </Container>
   );

@@ -16,12 +16,15 @@ using ReactBlog.Core.Interfaces;
 using ReactBlog.Infrastructure.Data;
 using ReactBlog.Infrastructure.Identity;
 using ReactBlog.Infrastructure.Logging;
-using ReactBlog.Infrastructure.Services;
+using ReactBlog.Infrastructure.Email;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using ReactBlog.Core.Email;
+using ReactBlog.Infrastructure.Email.Templates;
+using ReactBlog.Infrastructure;
 
 namespace ReactBlog
 {
@@ -38,9 +41,19 @@ namespace ReactBlog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            IoCContainer.Configuration = Configuration;
+            //Add SendGrid email sender
+            services.AddSendGridEmailSender();
+
+            //Add general email template
+            services.AddEmailTemplateSender();
+
+            //Seed the db if it is not have data
             CreateIdentityIfNotCreated(services);
 
             services.AddCors(op => op.AddPolicy("Cors", builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); }));
+           
+            // Change password policy
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -61,27 +74,37 @@ namespace ReactBlog
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
-            services.AddTransient<IEmailSender, EmailSender>();
-
-
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddOptions();
 
             services.AddDbContext<BlogContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BlogConnection")));
 
-            var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("bd5b0c50-fe1f-4fcb-82b9-56999e82e54f"));
-            services.AddAuthentication(options => {
+            services.AddAuthentication()
+               .AddGoogle(options =>
+               {
+                   IConfigurationSection googleAuthNSection =
+                       Configuration.GetSection("Authentication:Google");
+
+                   options.ClientId = googleAuthNSection["ClientId"];
+                   options.ClientSecret = googleAuthNSection["ClientSecret"];
+               });
+            services.AddAuthentication(options =>
+            {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(cfg => {
+            }).AddJwtBearer(cfg =>
+            {
                 cfg.RequireHttpsMetadata = false;
                 cfg.SaveToken = true;
                 cfg.TokenValidationParameters = new TokenValidationParameters()
                 {
-                    IssuerSigningKey = signinKey,
-                    ValidateAudience = false,
-                    ValidateIssuer = false,
-                    ValidateLifetime = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(IoCContainer.Configuration["Jwt:SecretKey"])),
+                    ValidateAudience = true,
+                    ValidIssuer= IoCContainer.Configuration["Jwt:Issuer"],
+                    ValidAudience=IoCContainer.Configuration["Jwt:Audience"],
+                    ValidateIssuer = true,
+                    ValidateLifetime = true,
                     ValidateIssuerSigningKey = true
                 };
 
@@ -90,11 +113,12 @@ namespace ReactBlog
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1",
-                    new Info {
+                    new Info
+                    {
                         Version = "v1",
                         Title = "Api ReactBlog",
-                        TermsOfService="None",
-                        Description="Api for React Blog"
+                        TermsOfService = "None",
+                        Description = "Api for React Blog"
                     });
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -114,18 +138,28 @@ namespace ReactBlog
             var sp = services.BuildServiceProvider();
             using (var scope = sp.CreateScope())
             {
+                // Check if managers is created
                 var existingUserManager = scope.ServiceProvider
                     .GetService<UserManager<ApplicationUser>>();
                 if (existingUserManager == null)
                 {
-                    services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<BlogContext>();
+                    // Add scoped classes UserManager,SignInManager
+                    services.AddIdentity<ApplicationUser, IdentityRole>()
+                        // Adds UsersStore and RolesStore
+                        .AddEntityFrameworkStores<BlogContext>()
+
+                        // Add a provider that generates unique keys and hashes for things
+                        // like forgot password links, phone number verification etc...
+                        .AddDefaultTokenProviders();
+
                 }
             }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env,IServiceProvider serviceProvider)
         {
+            
             app.UseCors("Cors");
             app.UseDefaultFiles();
 
@@ -172,6 +206,10 @@ namespace ReactBlog
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            //Store instance of the DI service so our application can access it anywhere
+            IoCContainer.Provider = serviceProvider;
+            var context = IoC.BlogContext;
         }
     }
 }

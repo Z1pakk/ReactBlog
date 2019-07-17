@@ -1,12 +1,17 @@
-﻿using System;
+﻿using ReactBlog.Core.Email;
+using SendGrid;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ReactBlog.Core.Interfaces
 {
+    /// <summary>
+    /// Handles ending emails
+    /// </summary>
     public interface IEmailSender
     {
-        Task SendEmailAsync(string email, string subject, string message);
+        Task<SendEmailResponse> SendEmailAsync(SendEmailDetails details);
     }
 }

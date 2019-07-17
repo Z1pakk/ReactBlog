@@ -11,9 +11,13 @@ export const userLoggedOut = () => ({
   type: USER_LOGGED_OUT
 });
 
+export const confirmEmail = (userId, code) => dispatch => {
+  api.user.confirmEmail(userId, code).then(res => {});
+};
+
 export const login = credentials => dispatch =>
   api.user.login(credentials).then(res => {
-    const token = res;
+    const token = res.token;
     localStorage.setItem("jwtToken", token);
     setAuthorizationToken(token);
     let jwtTokenDecode = jwt.decode(token);
@@ -21,7 +25,8 @@ export const login = credentials => dispatch =>
       userLoggedIn({
         email: jwtTokenDecode.email,
         isAdmin: jwtTokenDecode.isAdmin,
-        isTeacher: jwtTokenDecode.isTeacher
+        isTeacher: jwtTokenDecode.isTeacher,
+        isConfirmed: res.isConfirmed
       })
     );
   });

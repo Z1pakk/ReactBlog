@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ReactBlog.Core.Entities.UserAggregate;
 using ReactBlog.Infrastructure.Identity;
 using System;
 using System.Collections.Generic;

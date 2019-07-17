@@ -12,6 +12,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { Link as RouterLink } from "react-router-dom";
+import { GoogleLogin } from "react-google-login";
 import {
   Grid,
   Link,
@@ -87,7 +88,14 @@ export class LoginForm extends Component {
     if (!data.password) errors.password = "Can't be blank!";
     return errors;
   };
-
+  responseGoogle = response => {
+    console.log(response);
+    const tokenBlob = new Blob(
+      [JSON.stringify({ tokenId: response.tokenId }, null, 2)],
+      { type: "application/json" }
+    );
+    console.log(tokenBlob);
+  };
   render() {
     const { data, showPassword, errors, loading } = this.state;
     const { classes } = this.props;
@@ -97,6 +105,12 @@ export class LoginForm extends Component {
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
+          <GoogleLogin
+            clientId="507545800527-9oqfk63ua76fkstpbdbo46icopapms18.apps.googleusercontent.com"
+            buttonText="Google Login"
+            onSuccess={this.responseGoogle}
+            onFailure={this.responseGoogle}
+          />
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>

@@ -8,7 +8,7 @@ const DashboardPage = ({ isConfirmed }) => (
 );
 function mapStateToProps(state) {
   return {
-    isConfirmed: !!state.user.confirmed
+    isConfirmed: !!state.user.isConfirmed
   };
 }
 DashboardPage.propTypes = {

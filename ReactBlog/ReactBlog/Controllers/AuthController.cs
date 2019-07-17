@@ -11,7 +11,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ReactBlog.Core.Interfaces;
+using ReactBlog.Infrastructure;
 using ReactBlog.Infrastructure.Constants;
+using ReactBlog.Infrastructure.Data;
+using ReactBlog.Infrastructure.Email;
 using ReactBlog.Infrastructure.Identity;
 using ReactBlog.Infrastructure.Validators;
 using ReactBlog.ViewModels;
@@ -27,14 +30,20 @@ namespace ReactBlog.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAppLogger<AuthController> _logger;
+        private readonly BlogContext _context;
+        private readonly IEmailTemplateSender _emailSender;
         public AuthController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IAppLogger<AuthController> logger)
+            IAppLogger<AuthController> logger,
+            BlogContext context,
+            IEmailTemplateSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
+            _emailSender = emailSender;
         }
 
 
@@ -74,9 +83,8 @@ namespace ReactBlog.Controllers
                 return BadRequest(errors);
             }
             var user = await _userManager.FindByEmailAsync(credentials.Email);
-
             string token = await CreateTokenAsync(user);
-            return Ok(token);
+            return Ok(new {token=token,isConfirmed=user.EmailConfirmed});
         }
 
         /// <summary>
@@ -108,28 +116,82 @@ namespace ReactBlog.Controllers
                 var errors = CustomValidator.GetErrorsByModel(ModelState);
                 return BadRequest(errors);
             }
-            var user = new ApplicationUser
-            { UserName = model.Email,
-              Email = model.Email,
-              FirstName=model.FirstName,
-              LastName=model.LastName,
-              IsPromotions=model.Promotions
-            };
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
-            {
-                var errors = CustomValidator.GetErrorsByIdentityResult(result);
-                return BadRequest(errors);
-            }
-            result= await _userManager.AddToRoleAsync(user, "User");
-            if (!result.Succeeded)
-            {
-                var errors = CustomValidator.GetErrorsByIdentityResult(result);
-                return BadRequest(errors);
-            }
-            return await this.LoginAsync(new LoginViewModel() { Email = model.Email, Password = model.Password });
-        }
 
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var userRegistered = new ApplicationUser
+                    {
+                        UserName = model.Email,
+                        Email = model.Email,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        IsPromotions = model.Promotions
+                    };
+                    var result = await _userManager.CreateAsync(userRegistered, model.Password);
+                    if (!result.Succeeded)
+                    {
+                        var errors = CustomValidator.GetErrorsByIdentityResult(result);
+                        return BadRequest(errors);
+                    }
+                    else
+                    {
+                        var user = await _userManager.FindByNameAsync(model.Email);
+
+                        // Generate an email verification code
+                        var emailVerificationCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                        //Generate url for confirmation email
+                        var confirmationUrl = $"https://{Request.Host.Value}/confirmation?user={user.Id}&code={emailVerificationCode}";
+
+                        // Email to the user the verification code
+                        ReactBlogEmailSender mailService = new ReactBlogEmailSender(_emailSender);
+                        await mailService.SendUserVerificationEmail(null, user.Email, confirmationUrl);
+
+
+
+                    }
+                    result = await _userManager.AddToRoleAsync(userRegistered, "User");
+                    if (!result.Succeeded)
+                    {
+                        var errors = CustomValidator.GetErrorsByIdentityResult(result);
+                        return BadRequest(errors);
+                    }
+
+                    return await this.LoginAsync(new LoginViewModel() { Email = model.Email, Password = model.Password });
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    return BadRequest(new { error = ex.Message });
+                }
+            }
+
+        }
+        [HttpPost]
+        [Route("verify/email/{userId}/{emailToken}")]
+        public async Task<IActionResult> VerifyEmail(string userId,string emailToken)
+        {
+            //Get the user
+            var user = await _userManager.FindByIdAsync(userId);
+
+            //If user is null
+            if (user == null)
+            {
+                return BadRequest(new { error = "User not found" });
+            }
+
+            //If we find the user ...
+
+            //Verify the email token
+            var result=await _userManager.ConfirmEmailAsync(user, emailToken);
+            if (result.Succeeded)
+                return Ok();
+
+            var errors = CustomValidator.GetErrorsByIdentityResult(result);
+            return BadRequest(errors);
+        }
 
         private async Task<string> CreateTokenAsync(ApplicationUser user)
         {
@@ -142,9 +204,17 @@ namespace ReactBlog.Controllers
                     new Claim("isTeacher",isTeacher.ToString())
                };
             var now = DateTime.UtcNow;
-            var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("bd5b0c50-fe1f-4fcb-82b9-56999e82e54f"));
+            var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(IoCContainer.Configuration["Jwt:SecretKey"]));
             var signinCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256);
-            var jwt = new JwtSecurityToken(signingCredentials: signinCredentials, claims: claims, expires: now.Add(TimeSpan.FromDays(1)));
+
+            // Generate the jwt token
+            var jwt = new JwtSecurityToken(
+                issuer:IoCContainer.Configuration["Jwt:Issuer"],
+                signingCredentials: signinCredentials, 
+                claims: claims, 
+                audience:IoCContainer.Configuration["Jwt:Audience"],
+                expires: now.Add(TimeSpan.FromDays(1))
+                );
             return new JwtSecurityTokenHandler().WriteToken(jwt);
         }
     }
