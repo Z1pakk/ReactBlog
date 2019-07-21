@@ -15,7 +15,7 @@ export class App extends React.Component {
     return (
       <GlobalWrapper>
         <NavBar />
-        <div class="main">
+        <div className="main">
           <Route path="/" exact component={HomePage} />
           <GuestRoute path="/login" component={LoginPage} />
           <GuestRoute path="/signup" component={SignUpPage} />

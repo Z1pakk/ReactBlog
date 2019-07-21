@@ -8,7 +8,32 @@ const CarouselWrapper = styled.div`
   .flickity-enabled {
     position: relative;
   }
-
+  .flickity-enabled:focus {
+    outline: none;
+  }
+  .scrollable-nav {
+    position: absolute;
+    z-index: 999;
+    top: calc(50% - 12px);
+    right: 0;
+    bottom: 0;
+    width: 85px;
+    display: none;
+  }
+  .scrollable-nav .next {
+    display: inline-flex;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    transform: rotate(-45deg);
+    border: solid #dcdfe7;
+    border-width: 0 8px 8px 0;
+  }
+  .scrollable-nav span:hover {
+    padding: 8px;
+    border: solid;
+    border-width: 0 8px 8px 0;
+  }
   .flickity-enabled.is-draggable .flickity-viewport {
     cursor: move;
     cursor: grab;
@@ -130,6 +155,9 @@ const CarouselWrapper = styled.div`
     .featured-wrap h2 {
       font-size: 30px;
     }
+    .featured-wrap {
+      min-height: calc(100vh - 100px);
+    }
   }
   @media (max-width: 767px) and (min-width: 480px) {
     .featured-wrap h1,
@@ -204,6 +232,11 @@ const CarouselWrapper = styled.div`
   @media (min-width: 1024px) {
     .featured-wrap .item-meta {
       width: 90%;
+    }
+  }
+  @media (min-width: 480px) {
+    .section-scrollable.is-draggable + .scrollable-nav {
+      display: initial;
     }
   }
 `;

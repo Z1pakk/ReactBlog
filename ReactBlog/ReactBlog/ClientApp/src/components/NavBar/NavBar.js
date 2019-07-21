@@ -31,14 +31,14 @@ export class NavBar extends Component {
           <HeaderLogoWrapper>
             <H1Logo>
               <RouterLink to="/">
-                <img src={logo} />
+                <img alt="logo" src={logo} />
               </RouterLink>
             </H1Logo>
           </HeaderLogoWrapper>
           <HeaderNavBarWrapper>
             <NavWrapper>
               <label
-                for="toggle"
+                htmlFor="toggle"
                 className={classnames(
                   "nav-label hamburger hamburger-minus",
                   this.state.isOpened && "is-active"

@@ -1,29 +1,25 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
+import PropTypes from "prop-types";
+import cutWords from "../../common/functions/cutWords";
+import { getAuthors } from "../../common/functions/getAuthors";
 
 export class CarouselItem extends React.Component {
   render() {
     const { image, authors, title, datePost, postLink } = this.props.item;
-    var resultTitle = title;
-    if (title.length > 90) {
-      var resultTitle = title.substr(0, 75);
-      resultTitle =
-        title.substr(
-          0,
-          Math.min(resultTitle.length, resultTitle.lastIndexOf(" "))
-        ) + " ...";
-    }
+    var resultTitle = cutWords(title, 80);
+    var authorsJSX = getAuthors(authors);
 
     return (
-      <div class="section-featured is-featured-image" aria-hidden="true">
+      <div className="section-featured is-featured-image" aria-hidden="true">
         <div
-          class="featured-image"
-          style={{ "background-image": "url(" + image + ")" }}
+          className="featured-image"
+          style={{ backgroundImage: "url(" + image + ")" }}
         ></div>
-        <div class="featured-wrap flex">
-          <article class="featured-content">
-            <span class="featured-label global-tag">
+        <div className="featured-wrap flex">
+          <article className="featured-content">
+            <span className="featured-label global-tag">
               <svg
                 role="img"
                 viewBox="0 0 24 24"
@@ -34,17 +30,14 @@ export class CarouselItem extends React.Component {
               Featured
             </span>
             <h2>
-              <Link to={`/posts/${postLink}`}>
+              <Link to={`/post/${postLink}`}>
                 {resultTitle}
-                <span class="featured-dot"></span>
+                <span className="featured-dot"></span>
               </Link>
             </h2>
-            <div class="item-meta white">
+            <div className="item-meta white">
               <span>by </span>
-              {authors.map(item => (
-                <Link to={`/author/${item.id}`}>{item.name}&nbsp;</Link>
-              ))}
-              {/* <a href="/author/marcos/">Marcos Duran</a>, <a href="/author/janet/">Janet Robertson</a>, <a href="/author/james/">James Bryant</a> */}
+              {authorsJSX}
               &nbsp;
               <Moment fromNow>{datePost}</Moment>
             </div>
@@ -54,5 +47,9 @@ export class CarouselItem extends React.Component {
     );
   }
 }
+
+CarouselItem.propTypes = {
+  item: PropTypes.object.isRequired
+};
 
 export default CarouselItem;

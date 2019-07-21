@@ -1,14 +1,15 @@
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
 import { connect } from "react-redux";
-import * as actions from "../../actions/auth";
+// import * as actions from "../../actions/auth";
 import Carousel from "../Carousel/Carousel";
+import { Posts } from "../Posts/Posts";
 
 export class HomePage extends React.Component {
   render() {
     return (
-      <div className="content">
+      <div className="homePage">
         <Carousel />
+        <Posts isFeatured={true} />
         {/* <Typography variant="h1" component="p" gutterBottom>
               Home Page
             </Typography>

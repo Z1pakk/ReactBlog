@@ -1,22 +1,11 @@
 import React from "react";
-import Flickity from "react-flickity-component";
-import { CarouselWrapper } from "../../common/styled/Home/Carousel.style";
+import classnames from "classnames";
+import { PostsWrapper } from "../../common/styled/Posts/Posts.style";
+import PropTypes from "prop-types";
+import PostMinItem from "./PostMinItem";
 import test1image from "../../testImages/test1.jpg";
 import test2image from "../../testImages/test2.jpg";
 import test3image from "../../testImages/test3.jpg";
-import CarouselItem from "../Carousel/CarouselItem";
-
-const flickityOptions = {
-  wrapAround: true,
-  contain: true,
-  adaptiveHeight: true,
-  accessibility: false,
-  prevNextButtons: false,
-  pageDots: false,
-  selectedAttraction: 0.025,
-  friction: 0.3,
-  dragThreshold: 5
-};
 
 const posts = [
   {
@@ -35,7 +24,9 @@ const posts = [
       }
     ],
     datePost: "2019-04-17",
-    postLink: "superPost"
+    postLink: "superPost",
+    tag: "Story",
+    color: "orange"
   },
   {
     id: 2,
@@ -53,7 +44,9 @@ const posts = [
       }
     ],
     datePost: "2019-05-17",
-    postLink: "superPost2"
+    postLink: "superPost2",
+    tag: "Natural",
+    color: undefined
   },
   {
     id: 3,
@@ -71,35 +64,66 @@ const posts = [
       }
     ],
     datePost: "2019-05-17",
-    postLink: "superPost2"
+    postLink: "superPost2",
+    tag: "Site",
+    color: "purple"
+  },
+  {
+    id: 4,
+    title:
+      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni",
+    authors: [
+      {
+        login: "Zipakk23213",
+        name: "Vlad Shumskiy123213"
+      },
+      {
+        id: "cuandi236213123316@gmail.com",
+        name: "Andriy Shumskiy12321"
+      }
+    ],
+    datePost: "2019-05-17",
+    postLink: "superPost2",
+    tag: "Template",
+    color: "green"
   }
 ];
 
-export class Carousel extends React.Component {
-  handleClick = () => {
-    this.flkty.next();
-  };
+export class Posts extends React.Component {
+  // state={
+  //   data:null
+  // }
+  // componentDidMount(){
+  //   fetch("https://my.api.mockaroo.com/blog.json?key=20141000").then((res)=>{
+  //     return res.json();
+  //   })
+  //   .then((res)=> {
+  //     this.setState({data:res});
+  //   })
+  // }
   render() {
+    // const{data}=this.state;
     return (
-      <div className="content">
-        <CarouselWrapper>
-          <Flickity
-            id="slider"
-            className={"carousel section-scrollable"}
-            options={flickityOptions}
-            flickityRef={c => (this.flkty = c)}
-          >
-            {posts.map(item => (
-              <CarouselItem key={item.id} item={item} />
-            ))}
-          </Flickity>
-          <div className="scrollable-nav">
-            <span id="next" className="next" onClick={this.handleClick}></span>
+      <PostsWrapper>
+        <div
+          id="loop"
+          className={classnames(
+            "section-loop wrap",
+            this.props.isFeatured && "is-featured"
+          )}
+        >
+          <div className="items-wrap flex">
+            {!!posts &&
+              posts.map(item => <PostMinItem key={item.id} item={item} />)}
           </div>
-        </CarouselWrapper>
-      </div>
+        </div>
+      </PostsWrapper>
     );
   }
 }
 
-export default Carousel;
+Posts.propTypes = {
+  isFeatured: PropTypes.bool.isRequired
+};
+
+export default Posts;
