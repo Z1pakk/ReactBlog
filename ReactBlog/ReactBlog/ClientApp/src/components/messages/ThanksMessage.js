@@ -1,5 +1,4 @@
 import React from "react";
-import { Alert } from "reactstrap";
 import { Container } from "@material-ui/core";
 import { connect } from "react-redux";
 import { confirmEmail } from "../../actions/auth";
@@ -26,14 +25,14 @@ export class ThanksMessage {
     const { error } = this.state;
     return (
       <Container className="mt-2">
-        <Alert color="success">
+        {/* <Alert color="success">
           <h4 className="alert-heading">Thank you for confirm email!</h4>
         </Alert>
         {error && (
           <Alert color="danger">
             <h4 className="alert-heading">Error when confirm email({error})</h4>
           </Alert>
-        )}
+        )} */}
       </Container>
     );
   }

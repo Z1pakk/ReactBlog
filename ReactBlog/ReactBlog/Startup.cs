@@ -80,15 +80,6 @@ namespace ReactBlog
 
             services.AddDbContext<BlogContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BlogConnection")));
 
-            services.AddAuthentication()
-               .AddGoogle(options =>
-               {
-                   IConfigurationSection googleAuthNSection =
-                       Configuration.GetSection("Authentication:Google");
-
-                   options.ClientId = googleAuthNSection["ClientId"];
-                   options.ClientSecret = googleAuthNSection["ClientSecret"];
-               });
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

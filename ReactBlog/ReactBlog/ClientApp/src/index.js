@@ -16,7 +16,6 @@ import {
 import jwt from "jsonwebtoken";
 import { createBrowserHistory } from "history";
 
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const history = createBrowserHistory();
 
