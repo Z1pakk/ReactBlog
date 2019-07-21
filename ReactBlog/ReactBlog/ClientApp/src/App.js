@@ -8,7 +8,7 @@ import UserRoute from "./components/routes/UserRoute";
 import GuestRoute from "./components/routes/GuestRoute";
 import ThanksMessage from "./components/messages/ThanksMessage";
 import NavBar from "./components/NavBar/NavBar";
-import {GlobalWrapper,FooterWrapper} from "./common/styled/App/App.style";
+import { GlobalWrapper, FooterWrapper } from "./common/styled/App/App.style";
 
 export class App extends React.Component {
   render() {
@@ -16,18 +16,13 @@ export class App extends React.Component {
       <GlobalWrapper>
         <NavBar />
         <div class="main">
-        <Carousel />
+          <Route path="/" exact component={HomePage} />
+          <GuestRoute path="/login" component={LoginPage} />
+          <GuestRoute path="/signup" component={SignUpPage} />
+          <UserRoute path="/dashboard" exact component={DashboardPage} />
+          <UserRoute path="/confirmation" exact component={ThanksMessage} />
         </div>
-      <div>
-        <Route path="/" exact component={HomePage} />
-        <GuestRoute path="/login" component={LoginPage} />
-        <GuestRoute path="/signup" component={SignUpPage} />
-        <UserRoute path="/dashboard" exact component={DashboardPage} />
-        <UserRoute path="/confirmation" exact component={ThanksMessage} />
-      </div>
-      <FooterWrapper>
-
-      </FooterWrapper>
+        <FooterWrapper></FooterWrapper>
       </GlobalWrapper>
     );
   }
