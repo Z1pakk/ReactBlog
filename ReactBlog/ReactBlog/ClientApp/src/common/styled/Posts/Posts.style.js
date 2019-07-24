@@ -1,6 +1,41 @@
 import styled from "styled-components";
 
 const PostsWrapper = styled.div`
+  .load-more, .section-load-more {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .section-load-more {
+      margin: 20px auto 16vh;
+  }
+  .load-more {
+    display: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: all .3s ease;
+    border: 8px solid #dcdfe7;
+    border-radius: 100px;
+    outline: none;
+    background: none;
+}
+.load-more:hover {
+  transition: .3s cubic-bezier(.39, .07, .68, 1.7);
+  transform: scale(.65);
+}
+  @media (max-width: 479px)
+  {
+    .section-load-more {
+        margin-bottom: 7vh;
+    }
+  }
+  @media (max-width: 1023px) and (min-width: 768px)
+  {
+    .section-load-more {
+        margin-bottom: 10vh;
+    }
+  }
+
   .section-loop.is-featured {
     margin-top: -10vh;
   }
@@ -98,6 +133,7 @@ const PostsWrapper = styled.div`
     background-color: transparent;
     background-image: initial;
   }
+
   @media (max-width: 479px) {
     .wrap {
       width: 100%;

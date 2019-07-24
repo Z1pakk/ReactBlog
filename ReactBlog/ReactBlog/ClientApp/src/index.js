@@ -1,6 +1,6 @@
-import React from "react";
+import React, { lazy, Suspense } from 'react';
 import ReactDOM from "react-dom";
-import App from "./App";
+
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
@@ -15,7 +15,9 @@ import {
 } from "connected-react-router/immutable";
 import jwt from "jsonwebtoken";
 import { createBrowserHistory } from "history";
+import Loader from "./common/Loader";
 
+const App=lazy(()=>import("./App"));
 
 const history = createBrowserHistory();
 
@@ -44,7 +46,9 @@ if (localStorage.jwtToken) {
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App />
+      <Suspense fallback={<Loader />}>
+          <App />
+      </Suspense>
     </ConnectedRouter>
   </Provider>,
   rootElement

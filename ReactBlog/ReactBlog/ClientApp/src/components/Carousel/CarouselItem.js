@@ -5,14 +5,17 @@ import PropTypes from "prop-types";
 import cutWords from "../../common/functions/cutWords";
 import { getAuthors } from "../../common/functions/getAuthors";
 
+
+
 export class CarouselItem extends React.Component {
+  
   render() {
     const { image, authors, title, datePost, postLink } = this.props.item;
     var resultTitle = cutWords(title, 80);
     var authorsJSX = getAuthors(authors);
 
     return (
-      <div className="section-featured is-featured-image" aria-hidden="true">
+      <div className="section-featured is-featured-image" aria-hidden="true" >
         <div
           className="featured-image"
           style={{ backgroundImage: "url(" + image + ")" }}

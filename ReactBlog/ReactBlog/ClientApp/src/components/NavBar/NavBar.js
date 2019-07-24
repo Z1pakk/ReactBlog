@@ -12,6 +12,7 @@ import logo from "../../logo/logo.png";
 import { Link as RouterLink } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import classnames from "classnames";
+import links from "../../datas/links";
 // import { HamburgerMenu } from "react-hamburger-menu"
 
 export class NavBar extends Component {
@@ -55,37 +56,21 @@ export class NavBar extends Component {
                 className="nav-toggle"
               />
               <ul className="nav-list">
-                <li className="nav-list-item">
-                  <NavLink
-                    activeClassName="nav-link-active"
-                    to="/"
-                    exact
-                    className="nav-link"
-                  >
-                    Home
-                  </NavLink>
-                  <span className="nav-dot"></span>
-                </li>
-                <li className="nav-list-item">
-                  <NavLink
-                    activeClassName="nav-link-active"
-                    to="/login"
-                    className="nav-link"
-                  >
-                    Sign In
-                  </NavLink>
-                  <span className="nav-dot"></span>
-                </li>
-                <li className="nav-list-item">
-                  <NavLink
-                    activeClassName="nav-link-active"
-                    to="/signup"
-                    className="nav-link"
-                  >
-                    Sign Up
-                  </NavLink>
-                  <span className="nav-dot"></span>
-                </li>
+                {
+                  links.map(item =>
+                    <li key={item.title} className="nav-list-item">
+                      <NavLink
+                        activeClassName="nav-link-active"
+                        to={item.url}
+                        {...item.attr}
+                        className="nav-link"
+                      >
+                        {item.title}
+                      </NavLink>
+                      <span className="nav-dot"></span>
+                    </li>
+                  )
+                }
                 <li className="nav-list-item search-open">
                   <span>Search</span>
                   <svg

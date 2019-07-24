@@ -78,7 +78,7 @@ const posts = [
         name: "Vlad Shumskiy123213"
       },
       {
-        id: "cuandi236213123316@gmail.com",
+        login: "cuandi236213123316@gmail.com",
         name: "Andriy Shumskiy12321"
       }
     ],
@@ -90,9 +90,6 @@ const posts = [
 ];
 
 export class Posts extends React.Component {
-  // state={
-  //   data:null
-  // }
   // componentDidMount(){
   //   fetch("https://my.api.mockaroo.com/blog.json?key=20141000").then((res)=>{
   //     return res.json();
@@ -101,6 +98,17 @@ export class Posts extends React.Component {
   //     this.setState({data:res});
   //   })
   // }
+  constructor(props){
+    super(props);
+
+    this.state={
+      authorId:props.authorId,
+      data:null,
+    };
+  }
+  componentDidMount(){
+   
+  }
   render() {
     // const{data}=this.state;
     return (
@@ -117,13 +125,18 @@ export class Posts extends React.Component {
               posts.map(item => <PostMinItem key={item.id} item={item} />)}
           </div>
         </div>
+        <div className="section-load-more">
+          <div className="load-more" style={{"display": "inline-block"}}>
+          </div>
+        </div>
       </PostsWrapper>
     );
   }
 }
 
 Posts.propTypes = {
-  isFeatured: PropTypes.bool.isRequired
+  isFeatured: PropTypes.bool.isRequired,
+  authorId:PropTypes.number
 };
 
 export default Posts;

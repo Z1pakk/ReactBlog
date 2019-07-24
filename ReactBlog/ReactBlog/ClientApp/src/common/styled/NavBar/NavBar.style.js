@@ -107,47 +107,7 @@ const NavWrapper = styled.nav`
   padding: 0;
   letter-spacing: 0.9px;
 
-  .nav-list,
-  [id^="toggle"] {
-    display: none;
-  }
-  .nav-list {
-    z-index: 999;
-    min-width: 150px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: block;
-  }
-  .nav-list > .nav-list-item {
-    position: relative;
-    display: inline-block;
-    background-color: transparent;
-  }
-  .nav-list-item,
-  [id^="toggle"]:checked + .nav-list {
-    position: absolute;
-    right: 0;
-    display: block;
-    border-radius: 26px;
-    background-color: #f7f7f7;
-  }
-  .nav-list-item {
-    margin: 0;
-  }
-  .nav-link {
-    line-height: 0.5;
-    display: block;
-    margin: 0;
-    padding: 10px;
-    text-decoration: none;
-  }
-  .nav-link:hover ~ .nav-dot {
-    background-color: #d3d5dc;
-  }
-  .nav-link-active ~ .nav-dot {
-    background-color: #2821fc !important;
-  }
+ 
 
   .hamburger {
     font: inherit;

@@ -5,15 +5,7 @@ import { Link } from "react-router-dom";
 import cutWords from "../../common/functions/cutWords";
 import { getAuthorsAndOthers } from "../../common/functions/getAuthors";
 import Moment from "react-moment";
-
-const themes = {
-  orange: "tag-hash-orange",
-  red: "tag-hash-red",
-  purple: "tag-hash-violet",
-  yellow: "tag-hash-yellow",
-  blue: "tag-hash-blue",
-  green: "tag-hash-green"
-};
+import { themes } from "../../common/consts/themes"
 
 export class PostMinItem extends React.Component {
   render() {
@@ -69,7 +61,19 @@ export class PostMinItem extends React.Component {
 }
 
 PostMinItem.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.shape({
+    image: PropTypes.string,
+    authors:PropTypes.arrayOf(PropTypes.shape({
+      login:PropTypes.string.isRequired,
+      name:PropTypes.string.isRequired,
+    }).isRequired).isRequired,
+    title:PropTypes.string.isRequired,
+    datePost:PropTypes.string.isRequired,
+    postLink:PropTypes.string.isRequired,
+    id:PropTypes.number.isRequired,
+    tag:PropTypes.string.isRequired,
+    color:PropTypes.string,
+  }).isRequired,
 };
 
 export default PostMinItem;
