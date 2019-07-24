@@ -11,6 +11,10 @@ const links=[
         title:"Authors",
     },
     {
+        url:"/tags",
+        title:"Tags"
+    },
+    {
         url:"/login",
         title:"Sign In",
     },

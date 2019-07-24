@@ -1,5 +1,5 @@
 import React from "react";
-import AuthorWrapper from "../../common/styled/Authors/AuthorWrapper";
+import AuthorWrapper from "../../common/styled/Authors/AuthorWrapper.style";
 import Posts from "../Posts/Posts";
 import PropTypes from "prop-types";
 import classNames from "classnames";
@@ -8,7 +8,7 @@ import defaultImage from "../../common/consts/defaultImage"
 export class AuthorPage extends React.Component {
     constructor(props){
         super(props);
-        
+
         this.state={
             authorName:props.match.params.name,
             author:{

@@ -14,7 +14,7 @@ import AuthorsPage from "./components/pages/AuthorsPage";
 
 const PostPage=React.lazy(()=>import("./components/pages/PostPage"))
 const AuthorPage=React.lazy(()=>import("./components/pages/AuthorPage"))
-
+const TagsPage=React.lazy(()=>import("./components/pages/TagsPage"))
 
 export class App extends React.Component {
   render() {
@@ -26,6 +26,8 @@ export class App extends React.Component {
             <Route path="/post/:name" component={PostPage} />
             <Route path="/authors" component={AuthorsPage} />
             <Route path="/author/:name" component={AuthorPage} />
+            <Route path="/tags" component={TagsPage} />
+
             <GuestRoute path="/login" component={LoginPage} />
             <GuestRoute path="/signup" component={SignUpPage} />
             <UserRoute path="/dashboard" exact component={DashboardPage} />

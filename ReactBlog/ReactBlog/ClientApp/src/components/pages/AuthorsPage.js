@@ -1,5 +1,5 @@
 import React from "react";
-import AuthorsWrapper from "../../common/styled/Authors/AuthorsWrapper";
+import AuthorsWrapper from "../../common/styled/Authors/AuthorsWrapper.style";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import Loader from "../../common/Loader";
