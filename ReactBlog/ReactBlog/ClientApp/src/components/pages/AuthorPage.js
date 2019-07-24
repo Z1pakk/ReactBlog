@@ -8,6 +8,7 @@ import defaultImage from "../../common/consts/defaultImage"
 export class AuthorPage extends React.Component {
     constructor(props){
         super(props);
+        
         this.state={
             authorName:props.match.params.name,
             author:{
