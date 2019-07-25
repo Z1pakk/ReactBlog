@@ -13,10 +13,45 @@ const TagsWrapper = styled.div`
     font-size: 13px;
     font-weight: 700;
     display: block;
-    margin: 15px 10px 0;
+    margin: 15px 10px 0 !important;
     padding: 4px 10px;
     letter-spacing: 1.5px;
     text-transform: uppercase;
+}
+.page-tag-wrap.top {
+    min-height: 160px;
+}
+.page-tag-wrap {
+    padding: 10px;
+    flex: 1 auto;
+}
+.page-tag-wrap {
+    position: relative;
+    overflow: hidden;
+    margin: 15px;
+    transition: all .2s ease;
+    border-radius: 26px;
+}
+.page-tag-wrap.is-image a, .page-tag-wrap.is-image p, .page-author-wrap.is-cover-image a, .page-author-wrap.is-cover-image p {
+    color: #fff;
+}
+.page-tag-wrap.top h2 {
+    font-size: 30px;
+}
+.page-tag-wrap h2 {
+    margin: 0;
+    padding: 15px 30px;
+}
+.page-tag-wrap p {
+    max-width: 450px;
+    padding: 0 60px 3vh 30px;
+}
+.page-tag-wrap.other h2 {
+    font-size: 20px;
+    text-align: center;
+}
+.page-tag-wrap.other {
+    min-height: 30px;
 }
 `;
 
