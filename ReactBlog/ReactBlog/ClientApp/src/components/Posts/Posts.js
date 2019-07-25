@@ -103,6 +103,7 @@ export class Posts extends React.Component {
 
     this.state={
       authorId:props.authorId,
+      tagId:props.tagId,
       data:null,
     };
   }
@@ -136,7 +137,8 @@ export class Posts extends React.Component {
 
 Posts.propTypes = {
   isFeatured: PropTypes.bool.isRequired,
-  authorId:PropTypes.number
+  authorId:PropTypes.number,
+  tagId:PropTypes.number
 };
 
 export default Posts;
