@@ -64,7 +64,9 @@ export class NavBar extends Component {
                         activeClassName="nav-link-active"
                         to={item.url}
                         {...item.attr}
-                        onClick={this.handleChange}
+                        onClick={()=>this.setState({
+                          isOpened:false
+                        })}
                         className="nav-link"
                       >
                         {item.title}

@@ -80,7 +80,6 @@ ul {
   border-color: #dcdfe7;
   border-radius: 0;
   outline: 0;
-  flex: 0 0 100%;
 }
 .search-meta {
   font-size: 10px;
@@ -649,7 +648,7 @@ h6 {
     .search-input {
       font-size: 30px;
       height: 55px;
-      flex: 0 0 100%;
+      margin:0px 10px;
     }
     h1, h2, h3, h4, h5, h6 {
       margin: 3px 0 20px !important;
@@ -660,6 +659,9 @@ h6 {
     }
     .featured-wrap .featured-content {
       padding: 60px 20% 60px 85px !important;
+    }
+    .search-meta{
+      margin:0px 10px;
     }
   }
   @media(max-width:767px){
