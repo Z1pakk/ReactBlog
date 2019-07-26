@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactBlog.Infrastructure.Data;
 
 namespace ReactBlog.Infrastructure.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20190726173744_Add property to table tblPosts")]
+    partial class AddpropertytotabletblPosts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -190,34 +192,6 @@ namespace ReactBlog.Infrastructure.Migrations
                     b.ToTable("tblPostAuthors");
                 });
 
-            modelBuilder.Entity("ReactBlog.Core.Entities.Tag", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("tblTags");
-                });
-
-            modelBuilder.Entity("ReactBlog.Core.Entities.TagPost", b =>
-                {
-                    b.Property<int>("TagId");
-
-                    b.Property<int>("PostId");
-
-                    b.HasKey("TagId", "PostId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("tblTagPosts");
-                });
-
             modelBuilder.Entity("ReactBlog.Core.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -360,19 +334,6 @@ namespace ReactBlog.Infrastructure.Migrations
                     b.HasOne("ReactBlog.Core.Entities.Post", "PostOf")
                         .WithMany("PostAuthors")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("ReactBlog.Core.Entities.TagPost", b =>
-                {
-                    b.HasOne("ReactBlog.Core.Entities.Post", "PostOf")
-                        .WithMany("TagPosts")
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ReactBlog.Core.Entities.Tag", "TagOf")
-                        .WithMany("TagPosts")
-                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

@@ -81,7 +81,7 @@ export class Carousel extends React.Component {
   };
   render() {
     return (
-      <div className="content">
+      <div className="content" style={{"position":"relative"}}>
         <CarouselWrapper>
           <Flickity
             id="slider"

@@ -96,6 +96,16 @@ const AuthorWrapper = styled.div`
             font-size: 45px;
         }
     }
+    @media(max-width:479px){
+        .profile-wrap h1 {
+            font-size: 30px;
+            padding: 0 15px;
+        }
+        .profile-wrap h2 {
+            font-size: 16px;
+            padding: 0 20px;
+        }
+    }
 `;
 
 export default AuthorWrapper;

@@ -53,6 +53,17 @@ const TagsWrapper = styled.div`
 .page-tag-wrap.other {
     min-height: 30px;
 }
+@media (max-width: 479px)
+{
+    .section-page-tags {
+        margin: 0 auto 10vh;
+        padding: 0;
+    }
+    .page-tags-wrap {
+        max-width: 100%;
+        margin: 0 7.5px;
+    }
+}
 `;
 
 export default TagsWrapper;

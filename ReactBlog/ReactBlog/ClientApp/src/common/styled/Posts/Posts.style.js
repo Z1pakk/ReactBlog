@@ -135,6 +135,10 @@ const PostsWrapper = styled.div`
   }
 
   @media (max-width: 479px) {
+    .item-wrap h2 {
+      font-size: 25px;
+      margin-right: 0;
+    }
     .wrap {
       width: 100%;
       margin: 0;

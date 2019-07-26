@@ -54,6 +54,7 @@ export class NavBar extends Component {
                 type="checkbox"
                 id="toggle"
                 className="nav-toggle"
+                checked={this.state.isOpened}
               />
               <ul className="nav-list">
                 {
@@ -63,6 +64,7 @@ export class NavBar extends Component {
                         activeClassName="nav-link-active"
                         to={item.url}
                         {...item.attr}
+                        onClick={this.handleChange}
                         className="nav-link"
                       >
                         {item.title}

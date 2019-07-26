@@ -24,7 +24,7 @@ namespace ReactBlog
                 {
                     var blogContext = services.GetRequiredService<BlogContext>();
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    await BlogContextSeed.SeedAsync(blogContext, userManager, loggerFactory);
+                    await BlogContextSeed.SeedAsync(blogContext, userManager);
                 }
                 catch (Exception ex)
                 {

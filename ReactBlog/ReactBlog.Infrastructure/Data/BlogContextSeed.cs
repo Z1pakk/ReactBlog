@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using ReactBlog.Core.Entities;
 using ReactBlog.Core.Identity;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace ReactBlog.Infrastructure.Data
     {
         public static async Task SeedAsync(BlogContext blogContext,
             UserManager<ApplicationUser> usermanager,
-           ILoggerFactory loggerFactory, int? retry = 0)
+            int? retry = 0)
         {
             int retryForAvailability = retry.Value;
             try
@@ -26,6 +27,14 @@ namespace ReactBlog.Infrastructure.Data
                     blogContext.Roles.AddRange(
                         GetPreconfiguredRoles()
                     );
+                    await blogContext.SaveChangesAsync();
+                }
+                if (!blogContext.Tags.Any(t=>t.Name=="Featured"))
+                {
+                    blogContext.Tags.AddRange(
+                        GetPreconfiguredTags()
+                    );
+
                     await blogContext.SaveChangesAsync();
                 }
                 if (!blogContext.Users.Any())
@@ -47,14 +56,12 @@ namespace ReactBlog.Infrastructure.Data
 
                 // TODO: Set Seeder
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (retryForAvailability < 10)
                 {
                     retryForAvailability++;
-                    var log = loggerFactory.CreateLogger<BlogContextSeed>();
-                    log.LogError(ex.Message);
-                    await SeedAsync(blogContext,usermanager, loggerFactory, retryForAvailability);
+                    await SeedAsync(blogContext,usermanager, retryForAvailability);
                 }
             }
         }
@@ -69,6 +76,16 @@ namespace ReactBlog.Infrastructure.Data
             };
         }
 
+        private static IEnumerable<Tag> GetPreconfiguredTags()
+        {
+            return new List<Tag>
+            {
+                new Tag(){Name="Featured"}
+            };
+        }
+
         // TODO: Configure methods for seeder
+
+
     }
 }

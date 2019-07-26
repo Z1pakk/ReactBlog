@@ -59,6 +59,17 @@ const AuthorsWrapper = styled.div`
         background-color: transparent;
         background-image: initial;
     }
+    @media (max-width: 479px)
+    {
+        .page-authors-wrap {
+            max-width: 100%;
+            margin: 0 7.5px;
+        }
+        .section-page-authors {
+            margin: 0 auto 10vh;
+            padding: 0;
+        }
+    }
 `;
 
 export default AuthorsWrapper;

@@ -18,11 +18,15 @@ namespace ReactBlog.Core.Entities
         [Required]
         public DateTimeOffset DateCreate { get; private set; } = DateTimeOffset.Now;
 
+        public bool? isFeatured { get; set; }
+
         [ForeignKey("ColorOf")]
         public int ColorId { get; set; }
 
         public virtual Color ColorOf { get; set; }
 
         public virtual ICollection<PostAuthor> PostAuthors { get; set; }
+
+        public virtual ICollection<TagPost> TagPosts { get; set; }
     }
 }
