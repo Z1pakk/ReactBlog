@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ReactBlog.Infrastructure.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using ReactBlog.Core.Entities;
+using ReactBlog.Core.Identity;
 
 namespace ReactBlog.Infrastructure.Data
 {
@@ -15,10 +12,17 @@ namespace ReactBlog.Infrastructure.Data
         }
 
         // TODO: SET DbSet<T> for all tables
-        //public DbSet<User> Users { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<PostAuthor> PostAuthors { get; set; }
+        public DbSet<Color> Colors { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<PostAuthor>()
+           .HasKey(c => new { c.AuthorId, c.PostId });
             // TODO: Configure entities
             //builder.Entity<User>(ConfigureUser);
         }

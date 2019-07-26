@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using ReactBlog.Infrastructure.Identity;
+using ReactBlog.Core.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

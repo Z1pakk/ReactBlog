@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using ReactBlog.Core.Identity;
 using ReactBlog.Core.Interfaces;
 using ReactBlog.Infrastructure;
 using ReactBlog.Infrastructure.Constants;
 using ReactBlog.Infrastructure.Data;
 using ReactBlog.Infrastructure.Email;
-using ReactBlog.Infrastructure.Identity;
 using ReactBlog.Infrastructure.Validators;
 using ReactBlog.ViewModels;
 
@@ -25,23 +25,21 @@ namespace ReactBlog.Controllers
     [Produces("application/json")]
     [Route("api/[controller]")]
     [Authorize]
+    [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IAppLogger<AuthController> _logger;
         private readonly BlogContext _context;
         private readonly IEmailTemplateSender _emailSender;
         public AuthController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IAppLogger<AuthController> logger,
             BlogContext context,
             IEmailTemplateSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _logger = logger;
             _context = context;
             _emailSender = emailSender;
         }
