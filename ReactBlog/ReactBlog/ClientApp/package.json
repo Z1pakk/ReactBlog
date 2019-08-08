@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.1.1",
     "@material-ui/icons": "^4.2.0",
+    "@trainline/react-skeletor": "^1.0.2",
     "axios": "^0.19.0",
     "classnames": "^2.2.6",
     "connected-react-router": "^6.4.0",

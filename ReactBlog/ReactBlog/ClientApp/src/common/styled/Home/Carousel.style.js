@@ -18,7 +18,6 @@ const CarouselWrapper = styled.div`
     right: 0;
     bottom: 0;
     width: 85px;
-    display: none;
   }
   .scrollable-nav .next {
     display: inline-flex;

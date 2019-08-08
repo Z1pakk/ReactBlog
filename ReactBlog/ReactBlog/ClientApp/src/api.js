@@ -8,5 +8,9 @@ export default {
       axios.post("/api/auth/register", model).then(res => res.data),
     confirmEmail: (userId, code) =>
       axios.post(`/verify/email/${userId}/${code}`).then(res => res.data)
+  },
+  posts:{
+    getTop:countItems=>
+      axios.get(`/api/posts/topPosts?countItems=${countItems}`).then(res=>res.data)
   }
 };

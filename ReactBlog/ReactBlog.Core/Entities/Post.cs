@@ -9,8 +9,14 @@ namespace ReactBlog.Core.Entities
     [Table("tblPosts")]
     public class Post:BaseEntity
     {
+        public Post()
+        {
+            PostAuthors = new HashSet<PostAuthor>();
+            TagPosts = new HashSet<TagPost>();
+        }
+
         [Required]
-        [StringLength(maximumLength:100)]
+        [StringLength(maximumLength:500)]
         public string Title { get; set; }
 
         public string Image { get; set; }
@@ -18,10 +24,9 @@ namespace ReactBlog.Core.Entities
         [Required]
         public DateTimeOffset DateCreate { get; private set; } = DateTimeOffset.Now;
 
-        public bool? isFeatured { get; set; }
 
         [ForeignKey("ColorOf")]
-        public int ColorId { get; set; }
+        public int? ColorId { get; set; }
 
         public virtual Color ColorOf { get; set; }
 

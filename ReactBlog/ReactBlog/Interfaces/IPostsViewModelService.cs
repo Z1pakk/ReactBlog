@@ -10,6 +10,7 @@ namespace ReactBlog.Interfaces
     {
         // TODO: Add method which return featured posts for carousel and method which return all posts
 
-        Task<IEnumerable<PostItemViewModel>> GetFeaturedPosts(int pageIndex, int itemsPage);
+        Task<IEnumerable<PostItemViewModel>> TopPosts(int itemsPage = 5);
+        Task<IEnumerable<PostItemViewModel>> MainPosts(int countItems);
     }
 }

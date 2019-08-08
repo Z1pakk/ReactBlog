@@ -20,5 +20,7 @@ namespace ReactBlog.ViewModels.Posts
         public List<AuthorPostItemViewModel> Authors { get; set; }
 
         public DateTimeOffset DateOfCreate { get; set; }
+
+        // TODO: Field with raiting
     }
 }

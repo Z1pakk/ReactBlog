@@ -1,10 +1,11 @@
 import React from "react";
 import Flickity from "react-flickity-component";
 import { CarouselWrapper } from "../../common/styled/Home/Carousel.style";
-import test1image from "../../testImages/test1.jpg";
-import test2image from "../../testImages/test2.jpg";
-import test3image from "../../testImages/test3.jpg";
 import CarouselItem from "../Carousel/CarouselItem";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getTopPosts } from "../../actions/posts"
+import CarouselSkeletonItem from "./CarouselSkeletonItem";
 
 const flickityOptions = {
   wrapAround: true,
@@ -18,88 +19,59 @@ const flickityOptions = {
   dragThreshold: 5
 };
 
-const posts = [
-  {
-    id: 1,
-    image: test1image,
-    title:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    authors: [
-      {
-        login: "Z1pakk",
-        name: "Vlad Shumskiy"
-      },
-      {
-        login: "cuandi236316@gmail.com",
-        name: "Andriy Shumskiy"
-      }
-    ],
-    datePost: "2019-04-17",
-    postLink: "superPost"
-  },
-  {
-    id: 2,
-    image: test2image,
-    title:
-      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni",
-    authors: [
-      {
-        login: "Zipakk23213",
-        name: "Vlad Shumskiy123213"
-      },
-      {
-        login: "cuandi236213123316@gmail.com",
-        name: "Andriy Shumskiy12321"
-      }
-    ],
-    datePost: "2019-05-17",
-    postLink: "superPost2"
-  },
-  {
-    id: 3,
-    image: test3image,
-    title:
-      "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni",
-    authors: [
-      {
-        login: "Zipakk23213",
-        name: "Vlad Shumskiy123213"
-      },
-      {
-        login: "cuandi236213123316@gmail.com",
-        name: "Andriy Shumskiy12321"
-      }
-    ],
-    datePost: "2019-05-17",
-    postLink: "superPost2"
-  }
-];
 
 export class Carousel extends React.Component {
+  constructor(props){
+    super(props);
+    this.state={
+      posts:[]
+    }
+  }
+  componentDidMount (){
+    setTimeout(() => this.props.getTopPosts(5), 5000);
+    
+  }
   handleClick = () => {
     this.flkty.next();
   };
   render() {
+    const { topPosts }=this.props;
     return (
       <div className="content" style={{"position":"relative"}}>
+        
         <CarouselWrapper>
+          <div>
           <Flickity
             id="slider"
             className={"carousel section-scrollable"}
             options={flickityOptions}
             flickityRef={c => (this.flkty = c)}
           >
-            {posts.map(item => (
-              <CarouselItem key={item.id} item={item} />
-            ))}
+            {topPosts.length!==0?topPosts.map(item => (
+              <CarouselItem key={item.postId} item={item} />
+            )):
+            [
+            <CarouselSkeletonItem key={1} />
+            ]
+            }
           </Flickity>
           <div className="scrollable-nav">
             <span id="next" className="next" onClick={this.handleClick}></span>
           </div>
+          </div>
+
         </CarouselWrapper>
       </div>
     );
   }
 }
 
-export default Carousel;
+Carousel.propTypes={
+  getTopPosts:PropTypes.func.isRequired
+}
+function mapStateToProps(state,props) {
+  return {
+    topPosts: state.datas.topPosts
+  }
+}
+export default connect(mapStateToProps,{ getTopPosts })(Carousel);

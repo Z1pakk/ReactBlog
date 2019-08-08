@@ -20,6 +20,13 @@ namespace ReactBlog.Infrastructure.Data
         public DbSet<Tag> Tags { get; set; }
         public DbSet<TagPost> TagPost { get; set; }
 
+        // TODO: Table Likes and dislikes
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

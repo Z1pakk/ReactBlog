@@ -143,6 +143,20 @@ ul {
   height: 100%;
   border-radius: 26px;
 }
+.pending{
+  background-color: #bdc3c7 !important;
+  color: #bdc3c7;
+  user-select: none;
+  animation-name: skeletonAnimation;
+  animation-duration: 2.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+h2.pending{
+  padding-top:0px !important;
+  margin-top:20px !important;
+  font-size:40px !important;
+}
 #root {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -758,6 +772,15 @@ h6 {
     .featured-wrap h2 a .featured-dot {
       display: none;
     }
+    .pending{
+      background-color: #e4eaf0 !important;
+      color: #e4eaf0 !important;
+      user-select: none;
+      animation-name: skeletonAnimation;
+      animation-duration: 2.5s;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
   .nav-label {
     display: block;
   }
@@ -828,35 +851,30 @@ h6 {
   }
 }
 
-@-webkit-keyframes sk-bounce {
-  0%, 100% { -webkit-transform: scale(0.0) }
-  50% { -webkit-transform: scale(1.0) }
-}
-
 @keyframes sk-bounce {
   0%, 100% { 
     transform: scale(0.0);
-    -webkit-transform: scale(0.0);
   } 50% { 
     transform: scale(1.0);
-    -webkit-transform: scale(1.0);
   }
 }
-@-webkit-keyframes slide-top {
-  0% {
-  -webkit-transform: translateY(100px);
-  transform: translateY(100px);
-}
-100% {
-    -webkit-transform: translateY(0);
-    transform: translateY(0);
-}
-}@keyframes slide-top {
+@keyframes slide-top {
     0% {
-    -webkit-transform: translateY(100px);
     transform: translateY(100px);
 }
 100% {
-    -webkit-transform: translateY(0);
     transform: translateY(0);
 }
+}
+
+@keyframes skeletonAnimation {
+  0%{
+    opacity: 0.8
+  }
+  50%{
+    opacity: 0.4
+  }
+  100%{
+    opacity: 0.8
+  }
+};

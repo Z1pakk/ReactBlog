@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactBlog.Infrastructure.Data;
 
 namespace ReactBlog.Infrastructure.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20190727123023_DeleteFieldisFeatured")]
+    partial class DeleteFieldisFeatured
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,7 +160,7 @@ namespace ReactBlog.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ColorId");
+                    b.Property<int>("ColorId");
 
                     b.Property<DateTimeOffset>("DateCreate");
 
@@ -344,7 +346,8 @@ namespace ReactBlog.Infrastructure.Migrations
                 {
                     b.HasOne("ReactBlog.Core.Entities.Color", "ColorOf")
                         .WithMany("Posts")
-                        .HasForeignKey("ColorId");
+                        .HasForeignKey("ColorId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ReactBlog.Core.Entities.PostAuthor", b =>

@@ -5,12 +5,10 @@ import PropTypes from "prop-types";
 import cutWords from "../../common/functions/cutWords";
 import { getAuthors } from "../../common/functions/getAuthors";
 
-
-
 export class CarouselItem extends React.Component {
   
   render() {
-    const { image, authors, title, datePost, postLink } = this.props.item;
+    const { image, authors, title, dateOfCreate, postId } = this.props.item;
     var resultTitle = cutWords(title, 80);
     var authorsJSX = getAuthors(authors);
 
@@ -33,7 +31,7 @@ export class CarouselItem extends React.Component {
               Featured
             </span>
             <h2>
-              <Link to={`/post/${postLink}`}>
+              <Link to={`/post/${postId}`}>
                 {resultTitle}
                 <span className="featured-dot"></span>
               </Link>
@@ -42,7 +40,7 @@ export class CarouselItem extends React.Component {
               <span>by </span>
               {authorsJSX}
               &nbsp;
-              <Moment fromNow>{datePost}</Moment>
+              <Moment fromNow>{dateOfCreate}</Moment>
             </div>
           </article>
         </div>
@@ -55,4 +53,4 @@ CarouselItem.propTypes = {
   item: PropTypes.object.isRequired
 };
 
-export default CarouselItem;
+export default  CarouselItem;

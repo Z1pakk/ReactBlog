@@ -20,6 +20,9 @@ using System.Text;
 using ReactBlog.Infrastructure.Email.Templates;
 using ReactBlog.Infrastructure;
 using ReactBlog.Core.Identity;
+using Microsoft.Extensions.FileProviders;
+using ReactBlog.Interfaces;
+using ReactBlog.Services;
 
 namespace ReactBlog
 {
@@ -66,8 +69,9 @@ namespace ReactBlog
             });
 
 
-            services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
+            services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
+            services.AddScoped(typeof(IPostsViewModelService), typeof(PostsViewModelService));
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddOptions();
@@ -148,6 +152,7 @@ namespace ReactBlog
             app.UseCors("Cors");
             app.UseDefaultFiles();
 
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -160,7 +165,12 @@ namespace ReactBlog
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                   Path.Combine(Directory.GetCurrentDirectory(), @"StaticFiles")),
+                RequestPath = new PathString("/api/files")
+            });
             app.UseSpaStaticFiles();
 
             app.UseAuthentication();
