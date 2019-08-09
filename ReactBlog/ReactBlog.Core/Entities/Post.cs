@@ -23,6 +23,8 @@ namespace ReactBlog.Core.Entities
 
         public bool? IsFeatured { get; set; }
 
+
+
         [Required]
         public DateTimeOffset DateCreate { get; private set; } = DateTimeOffset.Now;
 
@@ -35,5 +37,7 @@ namespace ReactBlog.Core.Entities
         public virtual ICollection<PostAuthor> PostAuthors { get; set; }
 
         public virtual ICollection<TagPost> TagPosts { get; set; }
+
+        public virtual ICollection<PostLike> PostLikes { get; set; }
     }
 }

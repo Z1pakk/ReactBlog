@@ -13,6 +13,7 @@ namespace ReactBlog.Infrastructure.Data
 
         // TODO: SET DbSet<T> for all tables
         public DbSet<Post> Posts { get; set; }
+        public DbSet<PostLike> PostLikes { get; set; }
         public DbSet<PostAuthor> PostAuthors { get; set; }
         public DbSet<Color> Colors { get; set; }
 
@@ -31,10 +32,13 @@ namespace ReactBlog.Infrastructure.Data
             base.OnModelCreating(builder);
 
             builder.Entity<PostAuthor>()
-           .HasKey(c => new { c.AuthorId, c.PostId });
+            .HasKey(c => new { c.AuthorId, c.PostId });
 
             builder.Entity<TagPost>()
-          .HasKey(c => new { c.TagId, c.PostId });
+            .HasKey(c => new { c.TagId, c.PostId });
+
+            builder.Entity<PostLike>()
+            .HasKey(c => new { c.PostId, c.UserId });
             // TODO: Configure entities
             //builder.Entity<User>(ConfigureUser);
         }

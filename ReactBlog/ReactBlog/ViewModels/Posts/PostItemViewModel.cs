@@ -25,6 +25,8 @@ namespace ReactBlog.ViewModels.Posts
 
         public bool IsFeatured { get; set; }
 
+        public int CountLikes { get; set; }
+
         // TODO: Field with raiting
     }
 }

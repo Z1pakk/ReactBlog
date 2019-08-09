@@ -35,5 +35,7 @@ namespace ReactBlog.Core.Identity
         public bool IsPromotions { get; set; }
 
         public virtual ICollection<PostAuthor> PostAuthors { get; set; }
+
+        public virtual ICollection<PostLike> PostLikes { get; set; }
     }
 }

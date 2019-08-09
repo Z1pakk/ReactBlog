@@ -336,9 +336,19 @@ h2.pending{
 .section-loop .tag-hash-red a,
 .section-loop .tag-hash-orange a,
 .section-loop .tag-hash-yellow a,
-.section-loop .tag-hash-blue a {
+.section-loop .tag-hash-blue a{
   color: #fff !important;
 }
+.section-loop .is-image p,
+.section-loop .tag-hash-violet p,
+.section-loop .tag-hash-green p,
+.section-loop .tag-hash-red p,
+.section-loop .tag-hash-orange p,
+.section-loop .tag-hash-yellow p,
+.section-loop .tag-hash-blue p{
+  color: #fff !important;
+}
+
 .section-loop .is-image .white,
 .section-loop .tag-hash-violet .white,
 .section-loop .tag-hash-green .white,

@@ -59,7 +59,8 @@ namespace ReactBlog.Services
                           Name = t.TagOf.Name
                       }).ToList(),
                 Color=i.ColorId.HasValue?i.ColorOf.Name:null,
-                IsFeatured=i.IsFeatured.HasValue&&i.IsFeatured.Value==true?true:false
+                IsFeatured=i.IsFeatured.HasValue&&i.IsFeatured.Value==true?true:false,
+                CountLikes=i.PostLikes.Count
             }).ToList();
         }
     }

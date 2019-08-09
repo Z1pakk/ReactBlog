@@ -17,10 +17,11 @@ const PostWrapper = styled.article`
         margin: 0 auto;
         padding: 60px 85px 120px;
     }
-    .tags{   
-        position: absolute;
-        bottom: 40px;
-        margin-left: -8px;
+    .item-wrap svg {
+        width: 12px;
+        height: 12px;
+        margin: 0 2px -2px 0;
+        fill: #fff;
     }
     .post-wrap.no-image {
         padding-top: 0;

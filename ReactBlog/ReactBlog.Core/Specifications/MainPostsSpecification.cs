@@ -11,7 +11,7 @@ namespace ReactBlog.Core.Specifications
         public MainPostsSpecification(int page = 1,int? countTake = 5) : base(i=>true)
         {
             // TODO: Order by likes
-            ApplyOrderBy(t => t.DateCreate);
+            ApplyOrderByDescending(t => t.PostLikes.Count);
             int countToTake = countTake.HasValue ? countTake.Value : 5;
             int countToSkip = (page - 1) * countToTake;
             ApplyPaging(countToSkip, countToTake);

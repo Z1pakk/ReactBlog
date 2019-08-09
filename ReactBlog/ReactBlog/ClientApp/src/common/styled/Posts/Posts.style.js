@@ -9,6 +9,18 @@ const PostsWrapper = styled.div`
   .section-load-more {
       margin: 20px auto 16vh;
   }
+  .item-wrap svg {
+    padding-right:3px;
+    width: 17px;
+    height: 17px;
+    margin: 0 2px -2px 0;
+    fill: #D75A4A;
+  }
+  .item-wrap p {
+    font-size:17px;
+    margin:0px;
+    font-weight:bold;
+  }
   .load-more {
     display: none;
     box-sizing: border-box;
