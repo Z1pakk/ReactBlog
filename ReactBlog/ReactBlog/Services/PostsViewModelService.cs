@@ -47,17 +47,18 @@ namespace ReactBlog.Services
                 Authors = i.PostAuthors.Select(
                      a => new AuthorPostItemViewModel()
                      {
-                         UserName = a.AuthorOf.ApplicationUserOf.UserName,
-                         Name = a.AuthorOf.ApplicationUserOf.FirstName + " " + a.AuthorOf.ApplicationUserOf.LastName
+                         UserName = a.AuthorOf.UserName,
+                         Name = a.AuthorOf.FirstName + " " + a.AuthorOf.LastName
                      }).ToList(),
-                Image = $"api/files/PostHeaderImages/{i.Image}",
+                Image = Uri.IsWellFormedUriString(i.Image, UriKind.Absolute)?i.Image:$"api/files/PostHeaderImages/{i.Image}",
                 Title = i.Title,
                 Tags = i.TagPosts.Select(t =>
                       new TagPostItemViewModel()
                       {
                           Id = t.TagId,
                           Name = t.TagOf.Name
-                      }).ToList()
+                      }).ToList(),
+                Color=i.ColorId.HasValue?i.ColorOf.Name:null
             }).ToList();
         }
     }

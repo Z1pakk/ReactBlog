@@ -1,11 +1,11 @@
 import React from "react";
+import { connect } from "react-redux"
 import classnames from "classnames";
 import { PostsWrapper } from "../../common/styled/Posts/Posts.style";
 import PropTypes from "prop-types";
 import PostMinItem from "./PostMinItem";
-import test1image from "../../testImages/test1.jpg";
-import test2image from "../../testImages/test2.jpg";
-import test3image from "../../testImages/test3.jpg";
+import { getMainPosts } from "../../actions/posts"
+import PostSkeletonItem from "./PostSkeletonItem";
 
 // const posts = [
 //   {
@@ -27,91 +27,18 @@ import test3image from "../../testImages/test3.jpg";
 //     postLink: "superPost",
 //     tag: "Story",
 //     color: "orange"
-//   },
-//   {
-//     id: 2,
-//     image: test2image,
-//     title:
-//       "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni",
-//     authors: [
-//       {
-//         login: "Zipakk23213",
-//         name: "Vlad Shumskiy123213"
-//       },
-//       {
-//         login: "cuandi236213123316@gmail.com",
-//         name: "Andriy Shumskiy12321"
-//       }
-//     ],
-//     datePost: "2019-05-17",
-//     postLink: "superPost2",
-//     tag: "Natural",
-//     color: undefined
-//   },
-//   {
-//     id: 3,
-//     image: test3image,
-//     title:
-//       "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni",
-//     authors: [
-//       {
-//         login: "Zipakk23213",
-//         name: "Vlad Shumskiy123213"
-//       },
-//       {
-//         login: "cuandi236213123316@gmail.com",
-//         name: "Andriy Shumskiy12321"
-//       }
-//     ],
-//     datePost: "2019-05-17",
-//     postLink: "superPost2",
-//     tag: "Site",
-//     color: "purple"
-//   },
-//   {
-//     id: 4,
-//     title:
-//       "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni",
-//     authors: [
-//       {
-//         login: "Zipakk23213",
-//         name: "Vlad Shumskiy123213"
-//       },
-//       {
-//         login: "cuandi236213123316@gmail.com",
-//         name: "Andriy Shumskiy12321"
-//       }
-//     ],
-//     datePost: "2019-05-17",
-//     postLink: "superPost2",
-//     tag: "Template",
-//     color: "green"
 //   }
 // ];
 
 export class Posts extends React.Component {
-  // componentDidMount(){
-  //   fetch("https://my.api.mockaroo.com/blog.json?key=20141000").then((res)=>{
-  //     return res.json();
-  //   })
-  //   .then((res)=> {
-  //     this.setState({data:res});
-  //   })
-  // }
   constructor(props){
     super(props);
-
-    this.state={
-      authorId:props.authorId,
-      tagId:props.tagId,
-      data:null,
-    };
   }
   componentDidMount(){
-   
+    this.props.getMainPosts(8);
   }
   render() {
-    // const{data}=this.state;
+    const{ posts }=this.props;
     return (
       <PostsWrapper>
         <div
@@ -122,8 +49,10 @@ export class Posts extends React.Component {
           )}
         >
           <div className="items-wrap flex">
-            {!!posts &&
-              posts.map(item => <PostMinItem key={item.id} item={item} />)}
+            {!!posts&&posts.length!==0 
+             ? posts.map(item => <PostMinItem key={item.id} item={item} />) 
+             : [ <PostSkeletonItem key={1} />,<PostSkeletonItem  key={2} />,<PostSkeletonItem  key={3} />,<PostSkeletonItem  key={4}/>,<PostSkeletonItem  key={5}/>,<PostSkeletonItem  key={6}/> ]
+            }
           </div>
         </div>
         <div className="section-load-more">
@@ -138,7 +67,14 @@ export class Posts extends React.Component {
 Posts.propTypes = {
   isFeatured: PropTypes.bool.isRequired,
   authorId:PropTypes.number,
-  tagId:PropTypes.number
+  tagId:PropTypes.number,
+  getMainPosts:PropTypes.func.isRequired
 };
 
-export default Posts;
+function mapStateToProps(state,props){
+  return {
+    posts: state.datas.posts
+  }
+}
+
+export default connect(mapStateToProps,{ getMainPosts })(Posts);

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ReactBlog.Core.Entities;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ReactBlog.Core.Identity
@@ -33,6 +34,6 @@ namespace ReactBlog.Core.Identity
         [PersonalData]
         public bool IsPromotions { get; set; }
 
-        public virtual Author AuthorOf { get; set; }
+        public virtual ICollection<PostAuthor> PostAuthors { get; set; }
     }
 }

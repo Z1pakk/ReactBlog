@@ -16,4 +16,4 @@ const themes = {
     blue: "tag-hash-post-blue",
     green: "tag-hash-post-green"
   }
-export{themes,themesPosts};
+export { themes,themesPosts };

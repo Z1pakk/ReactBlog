@@ -21,6 +21,8 @@ namespace ReactBlog.Core.Entities
 
         public string Image { get; set; }
 
+        public bool? IsFeatured { get; set; }
+
         [Required]
         public DateTimeOffset DateCreate { get; private set; } = DateTimeOffset.Now;
 

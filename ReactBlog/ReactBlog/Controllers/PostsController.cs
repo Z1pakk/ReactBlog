@@ -18,7 +18,16 @@ namespace ReactBlog.Controllers
         {
             _postsViewModelService = postsViewModelService;
         }
+        /// <summary>
+        /// Get posts for carousel which can put a count items for return
+        /// </summary>
+        /// <param name="countItems">Request count posts for response</param>
+        /// <returns> List of posts for carousel </returns>
+        /// <response code="200"> Successed response.  </response>
+        /// <reponse code="400"> Return errors </reponse>
         [HttpGet("topPosts")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         public async Task<IActionResult> GetTopPosts(int countItems=5)
         {
             var topPosts = await _postsViewModelService.TopPosts(countItems);

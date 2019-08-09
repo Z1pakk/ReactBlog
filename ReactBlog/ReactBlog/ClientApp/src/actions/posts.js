@@ -1,6 +1,5 @@
-import { TOP_POSTS_GET } from "../types";
+import { TOP_POSTS_GET,MAIN_POSTS_GET } from "../types";
 import api from "../api";
-import jwt from "jsonwebtoken";
 
 
 export const gettedTopPosts = (res) => ({
@@ -8,10 +7,23 @@ export const gettedTopPosts = (res) => ({
     topPosts:res
 });
 
-export const getTopPosts = (countItems) =>dispatch => {
+export const gettedMainPosts = (res) => ({
+    type: MAIN_POSTS_GET,
+    data:res
+});
+
+export const getTopPosts = (countItems) => dispatch => {
     api.posts.getTop(countItems).then(res=>{
         dispatch(
             gettedTopPosts(res)
         )
     });
   };
+
+export const getMainPosts = (countItems) => dispatch => {
+    api.posts.getPosts(countItems).then(res=>{
+        dispatch(
+            gettedMainPosts(res)
+        )
+    })
+};

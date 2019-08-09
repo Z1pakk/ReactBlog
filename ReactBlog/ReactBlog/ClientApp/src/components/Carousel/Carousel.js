@@ -16,7 +16,8 @@ const flickityOptions = {
   pageDots: false,
   selectedAttraction: 0.025,
   friction: 0.3,
-  dragThreshold: 5
+  dragThreshold: 5,
+  draggable: true
 };
 
 
@@ -28,8 +29,7 @@ export class Carousel extends React.Component {
     }
   }
   componentDidMount (){
-    setTimeout(() => this.props.getTopPosts(5), 5000);
-    
+    this.props.getTopPosts(5);
   }
   handleClick = () => {
     this.flkty.next();

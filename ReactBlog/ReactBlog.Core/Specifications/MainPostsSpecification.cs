@@ -15,6 +15,7 @@ namespace ReactBlog.Core.Specifications
             int countToTake = countTake.HasValue ? countTake.Value : 5;
             ApplyPaging(0, countToTake);
 
+            AddInclude(t => t.ColorOf);
             AddInclude(t => t.PostAuthors);
             AddInclude(t => t.TagPosts);
         }

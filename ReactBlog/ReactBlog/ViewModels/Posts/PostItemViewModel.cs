@@ -21,6 +21,8 @@ namespace ReactBlog.ViewModels.Posts
 
         public DateTimeOffset DateOfCreate { get; set; }
 
+        public string Color { get; set; }
+
         // TODO: Field with raiting
     }
 }

@@ -13,10 +13,9 @@ export class PostMinItem extends React.Component {
       image,
       authors,
       title,
-      datePost,
-      postLink,
-      id,
-      tag,
+      dateOfCreate,
+      postId,
+      tags,
       color
     } = this.props.item;
 
@@ -33,7 +32,7 @@ export class PostMinItem extends React.Component {
         )}
       >
         <article>
-          <Link to={`/post/${postLink}`} className="item-link-overlay"></Link>
+          <Link to={`/post/${postId}`} className="item-link-overlay"></Link>
           {!!image && (
             <div
               className="item-image"
@@ -41,7 +40,7 @@ export class PostMinItem extends React.Component {
             ></div>
           )}
           <h2>
-            <Link to={`/post/${postLink}`} className="white">
+            <Link to={`/post/${postId}`} className="white">
               {resultTitle}
             </Link>
           </h2>
@@ -49,11 +48,13 @@ export class PostMinItem extends React.Component {
             <span>by </span>
             {authorsJSX}
             &nbsp;
-            <Moment fromNow>{datePost}</Moment>
+            <Moment fromNow>{dateOfCreate}</Moment>
           </div>
-          <Link className="primary-tag global-tag white" to={`/tag/${tag}`}>
-            {tag}
+          {tags.map(item=>
+          <Link className="primary-tag global-tag white" to={`/tag/${item.name}`}>
+            {item.name}
           </Link>
+          )}
         </article>
       </div>
     );
@@ -63,17 +64,29 @@ export class PostMinItem extends React.Component {
 PostMinItem.propTypes = {
   item: PropTypes.shape({
     image: PropTypes.string,
+
     authors:PropTypes.arrayOf(PropTypes.shape({
-      login:PropTypes.string.isRequired,
+      userName:PropTypes.string.isRequired,
       name:PropTypes.string.isRequired,
     }).isRequired).isRequired,
+
     title:PropTypes.string.isRequired,
+
     datePost:PropTypes.string.isRequired,
+
     postLink:PropTypes.string.isRequired,
+
     id:PropTypes.number.isRequired,
-    tag:PropTypes.string.isRequired,
+
+    tags:PropTypes.arrayOf(PropTypes.shape({
+      id:PropTypes.number.isRequired,
+      name:PropTypes.string.isRequired,
+    }).isRequired).isRequired,
+
     color:PropTypes.string,
+
   }).isRequired,
+  
 };
 
 export default PostMinItem;

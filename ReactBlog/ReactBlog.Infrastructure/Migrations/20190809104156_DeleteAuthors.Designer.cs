@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReactBlog.Infrastructure.Data;
 
 namespace ReactBlog.Infrastructure.Migrations
 {
     [DbContext(typeof(BlogContext))]
-    partial class BlogContextModelSnapshot : ModelSnapshot
+    [Migration("20190809104156_DeleteAuthors")]
+    partial class DeleteAuthors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,8 +157,6 @@ namespace ReactBlog.Infrastructure.Migrations
 
                     b.Property<string>("Image");
 
-                    b.Property<bool?>("IsFeatured");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(500);
@@ -175,6 +175,9 @@ namespace ReactBlog.Infrastructure.Migrations
                     b.Property<int>("PostId");
 
                     b.HasKey("AuthorId", "PostId");
+
+                    b.HasIndex("AuthorId")
+                        .IsUnique();
 
                     b.HasIndex("PostId");
 
@@ -204,7 +207,7 @@ namespace ReactBlog.Infrastructure.Migrations
 
                     b.HasKey("TagId", "PostId");
 
-                    b.HasAlternateKey("PostId", "TagId");
+                    b.HasIndex("PostId");
 
                     b.ToTable("tblTagPosts");
                 });
@@ -335,8 +338,8 @@ namespace ReactBlog.Infrastructure.Migrations
             modelBuilder.Entity("ReactBlog.Core.Entities.PostAuthor", b =>
                 {
                     b.HasOne("ReactBlog.Core.Identity.ApplicationUser", "AuthorOf")
-                        .WithMany("PostAuthors")
-                        .HasForeignKey("AuthorId")
+                        .WithOne("AuthorOf")
+                        .HasForeignKey("ReactBlog.Core.Entities.PostAuthor", "AuthorId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ReactBlog.Core.Entities.Post", "PostOf")

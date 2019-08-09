@@ -13,7 +13,6 @@ namespace ReactBlog.Infrastructure.Data
 
         // TODO: SET DbSet<T> for all tables
         public DbSet<Post> Posts { get; set; }
-        public DbSet<Author> Authors { get; set; }
         public DbSet<PostAuthor> PostAuthors { get; set; }
         public DbSet<Color> Colors { get; set; }
 

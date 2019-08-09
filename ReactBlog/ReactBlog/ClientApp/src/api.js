@@ -11,6 +11,8 @@ export default {
   },
   posts:{
     getTop:countItems=>
-      axios.get(`/api/posts/topPosts?countItems=${countItems}`).then(res=>res.data)
+      axios.get(`/api/posts/topPosts?countItems=${countItems}`).then(res=>res.data),
+    getPosts:countItems=>
+      axios.get(`/api/posts/mainPosts?countItems=${countItems}`).then(res=>res.data)
   }
 };
