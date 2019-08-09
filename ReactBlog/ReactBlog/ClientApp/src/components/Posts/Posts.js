@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 import PostMinItem from "./PostMinItem";
 import { getMainPosts } from "../../actions/posts"
 import PostSkeletonItem from "./PostSkeletonItem";
+import InfiniteScroll from 'react-infinite-scroller';
 
 // const posts = [
 //   {
@@ -31,14 +32,15 @@ import PostSkeletonItem from "./PostSkeletonItem";
 // ];
 
 export class Posts extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
   }
-  componentDidMount(){
+  componentDidMount() {
     this.props.getMainPosts(8);
   }
   render() {
-    const{ posts }=this.props;
+    const loader = <div className="loader">Loading ...</div>;
+    const { posts } = this.props;
     return (
       <PostsWrapper>
         <div
@@ -49,14 +51,23 @@ export class Posts extends React.Component {
           )}
         >
           <div className="items-wrap flex">
-            {!!posts&&posts.length!==0 
-             ? posts.map(item => <PostMinItem key={item.id} item={item} />) 
-             : [ <PostSkeletonItem key={1} />,<PostSkeletonItem  key={2} />,<PostSkeletonItem  key={3} />,<PostSkeletonItem  key={4}/>,<PostSkeletonItem  key={5}/>,<PostSkeletonItem  key={6}/> ]
-            }
+            <InfiniteScroll
+              pageStart={0}
+              loadMore={this.loadItems.bind(this)}
+              hasMore={this.state.hasMoreItems}
+              loader={loader}>
+
+              <div className="tracks">
+                {!!posts && posts.length !== 0
+                  ? posts.map(item => <PostMinItem key={item.id} item={item} />)
+                  : [<PostSkeletonItem key={1} />, <PostSkeletonItem key={2} />, <PostSkeletonItem key={3} />, <PostSkeletonItem key={4} />, <PostSkeletonItem key={5} />, <PostSkeletonItem key={6} />]
+                }
+              </div>
+            </InfiniteScroll>
           </div>
         </div>
         <div className="section-load-more">
-          <div className="load-more" style={{"display": "inline-block"}}>
+          <div className="load-more" style={{ "display": "inline-block" }}>
           </div>
         </div>
       </PostsWrapper>
@@ -66,15 +77,15 @@ export class Posts extends React.Component {
 
 Posts.propTypes = {
   isFeatured: PropTypes.bool.isRequired,
-  authorId:PropTypes.number,
-  tagId:PropTypes.number,
-  getMainPosts:PropTypes.func.isRequired
+  authorId: PropTypes.number,
+  tagId: PropTypes.number,
+  getMainPosts: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state,props){
+function mapStateToProps(state, props) {
   return {
     posts: state.datas.posts
   }
 }
 
-export default connect(mapStateToProps,{ getMainPosts })(Posts);
+export default connect(mapStateToProps, { getMainPosts })(Posts);

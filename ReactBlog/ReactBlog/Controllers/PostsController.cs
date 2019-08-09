@@ -35,9 +35,9 @@ namespace ReactBlog.Controllers
         }
 
         [HttpGet("mainPosts")]
-        public async Task<IActionResult> GetMainPosts(int countItems = 5)
+        public async Task<IActionResult> GetMainPosts(int page = 1,int countItems = 5)
         {
-            var mainPosts = await _postsViewModelService.MainPosts(countItems);
+            var mainPosts = await _postsViewModelService.MainPosts(page,countItems);
             return Ok(mainPosts);
         }
     }

@@ -7,6 +7,10 @@ import { getAuthorsAndOthers } from "../../common/functions/getAuthors";
 import Moment from "react-moment";
 import { themes } from "../../common/consts/themes"
 
+function isUrl(s) {
+  var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
+  return regexp.test(s);
+}
 export class PostMinItem extends React.Component {
   render() {
     const {
@@ -18,7 +22,11 @@ export class PostMinItem extends React.Component {
       tags,
       color
     } = this.props.item;
-
+    var resultImage=null;
+    if(!!image){
+      resultImage=(isUrl(image)?image:("api/files/PostHeaderImages/"+image));
+    }
+   
     var resultTitle = cutWords(title, 80);
     var authorsJSX = getAuthorsAndOthers(authors);
     var number = Math.floor(Math.random() * 101);
@@ -27,16 +35,16 @@ export class PostMinItem extends React.Component {
         className={classnames(
           "item-wrap flex post",
           number < 10 && "tag-hash-large",
-          !!image && "is-image",
+          !!resultImage && "is-image",
           !!themes[color] && themes[color]
         )}
       >
         <article>
           <Link to={`/post/${postId}`} className="item-link-overlay"></Link>
-          {!!image && (
+          {!!resultImage && (
             <div
               className="item-image"
-              style={{ backgroundImage: " url(" + image + ")" }}
+              style={{ backgroundImage: " url(" + resultImage + ")" }}
             ></div>
           )}
           <h2>

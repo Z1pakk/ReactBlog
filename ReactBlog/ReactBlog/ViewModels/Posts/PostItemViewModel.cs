@@ -23,6 +23,8 @@ namespace ReactBlog.ViewModels.Posts
 
         public string Color { get; set; }
 
+        public bool IsFeatured { get; set; }
+
         // TODO: Field with raiting
     }
 }

@@ -29,9 +29,9 @@ namespace ReactBlog.Services
             return convertPosts(items);
         }
 
-        public async Task<IEnumerable<PostItemViewModel>> MainPosts(int countItems)
+        public async Task<IEnumerable<PostItemViewModel>> MainPosts(int page=1,int countItems=8)
         {
-            var mainSpecification = new MainPostsSpecification(countItems);
+            var mainSpecification = new MainPostsSpecification(page,countItems);
 
             var items = await _postsRepository.ListAsync(mainSpecification);
 
@@ -50,7 +50,7 @@ namespace ReactBlog.Services
                          UserName = a.AuthorOf.UserName,
                          Name = a.AuthorOf.FirstName + " " + a.AuthorOf.LastName
                      }).ToList(),
-                Image = Uri.IsWellFormedUriString(i.Image, UriKind.Absolute)?i.Image:$"api/files/PostHeaderImages/{i.Image}",
+                Image = Uri.IsWellFormedUriString(i.Image, UriKind.Absolute)?i.Image:i.Image,
                 Title = i.Title,
                 Tags = i.TagPosts.Select(t =>
                       new TagPostItemViewModel()
@@ -58,7 +58,8 @@ namespace ReactBlog.Services
                           Id = t.TagId,
                           Name = t.TagOf.Name
                       }).ToList(),
-                Color=i.ColorId.HasValue?i.ColorOf.Name:null
+                Color=i.ColorId.HasValue?i.ColorOf.Name:null,
+                IsFeatured=i.IsFeatured.HasValue&&i.IsFeatured.Value==true?true:false
             }).ToList();
         }
     }
