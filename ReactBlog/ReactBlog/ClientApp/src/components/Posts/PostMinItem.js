@@ -25,16 +25,14 @@ export class PostMinItem extends React.Component {
     var resultImage=null;
     if(!!image){
       resultImage=(isUrl(image)?image:("api/files/PostHeaderImages/"+image));
-    }
+    };
    
     var resultTitle = cutWords(title, 80);
     var authorsJSX = getAuthorsAndOthers(authors);
-    var number = Math.floor(Math.random() * 101);
     return (
       <div
         className={classnames(
           "item-wrap flex post",
-          number < 10 && "tag-hash-large",
           !!resultImage && "is-image",
           !!themes[color] && themes[color]
         )}
@@ -58,11 +56,13 @@ export class PostMinItem extends React.Component {
             &nbsp;
             <Moment fromNow>{dateOfCreate}</Moment>
           </div>
-          {tags.map(item=>
-          <Link className="primary-tag global-tag white" to={`/tag/${item.name}`}>
-            {item.name}
-          </Link>
-          )}
+          <div className="tags">
+            {tags.map(item=>
+              <Link className="primary-tag global-tag white" to={`/tag/${item.name}`}>
+                {item.name}
+              </Link>
+            )}
+          </div>
         </article>
       </div>
     );

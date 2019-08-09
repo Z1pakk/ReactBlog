@@ -29,13 +29,13 @@ namespace ReactBlog.Services
             return convertPosts(items);
         }
 
-        public async Task<IEnumerable<PostItemViewModel>> MainPosts(int page=1,int countItems=8)
+        public async Task<PostsViewModel> MainPosts(int page=1,int countItems=8)
         {
             var mainSpecification = new MainPostsSpecification(page,countItems);
 
             var items = await _postsRepository.ListAsync(mainSpecification);
-
-            return convertPosts(items);
+            bool isHasNext = await _postsRepository.CountAsync(mainSpecification) >= ((page-1) * countItems) ? true : false;
+            return new PostsViewModel() { Items = convertPosts(items), IsHasNext = isHasNext };
         }
 
         private IEnumerable<PostItemViewModel> convertPosts(IReadOnlyList<Post> items)

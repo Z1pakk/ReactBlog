@@ -19,6 +19,18 @@ const PostsWrapper = styled.div`
     outline: none;
     background: none;
 }
+  .page-posts-title {
+    width: 100%;
+  }
+   .page-posts-title h4 {
+    font-size: 13px;
+    font-weight: 700;
+    display: block;
+    margin: 15px 10px 0;
+    padding: 4px 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
 .load-more:hover {
   transition: .3s cubic-bezier(.39, .07, .68, 1.7);
   transform: scale(.65);
@@ -97,13 +109,16 @@ const PostsWrapper = styled.div`
     flex: 1 0 66.666%;
   }
   .primary-tag {
-    position: absolute;
+    position: relative;
     z-index: 2;
-    bottom: 40px;
-    margin-left: -8px;
     padding: 4px 8px;
     background-color: transparent;
   }
+  .tags{   
+    position: absolute;
+    bottom: 40px;
+    margin-left: -8px;
+}
   .primary-tag:hover {
     color: #161b3d !important;
     background-color: #fff;

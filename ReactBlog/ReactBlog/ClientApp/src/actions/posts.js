@@ -20,10 +20,11 @@ export const getTopPosts = (countItems) => dispatch => {
     });
   };
 
-export const getMainPosts = (countItems) => dispatch => {
-    api.posts.getPosts(countItems).then(res=>{
-        dispatch(
-            gettedMainPosts(res)
-        )
-    })
+export const getMainPosts = (page,countItems)  => {
+    return new Promise((resolve, reject) => {
+        api.posts.getPosts(page,countItems).then(res=>{
+            resolve(res);
+        }).
+        catch(err=>reject(new Error("Error")))
+    });
 };

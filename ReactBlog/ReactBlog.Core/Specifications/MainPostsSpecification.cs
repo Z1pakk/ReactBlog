@@ -13,7 +13,7 @@ namespace ReactBlog.Core.Specifications
             // TODO: Order by likes
             ApplyOrderBy(t => t.DateCreate);
             int countToTake = countTake.HasValue ? countTake.Value : 5;
-            int countToSkip = page - 1 * countToTake;
+            int countToSkip = (page - 1) * countToTake;
             ApplyPaging(countToSkip, countToTake);
 
             AddInclude(t => t.ColorOf);

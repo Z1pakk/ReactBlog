@@ -34,13 +34,32 @@ import InfiniteScroll from 'react-infinite-scroller';
 export class Posts extends React.Component {
   constructor(props) {
     super(props);
+    this.state={
+      posts:[],
+      hasMoreItems:true
+    }
   }
-  componentDidMount() {
-    this.props.getMainPosts(8);
+
+  loadingData=(page)=>{
+    console.log("page:"+page)
+    this.fetchData(page,9);
   }
+
+  fetchData=(page,countToTake)=>{
+    getMainPosts(page,countToTake).then(res=>
+      {
+        const items=this.state.posts.concat(res.items);
+        console.log(items);
+        this.setState({
+          posts:items,
+          hasMoreItems:res.isHasNext
+        })
+    });
+  }
+
   render() {
-    const loader = <div className="loader">Loading ...</div>;
-    const { posts } = this.props;
+    const loader = <div className="items-wrap flex"><PostSkeletonItem /><PostSkeletonItem /> <PostSkeletonItem/>, <PostSkeletonItem/>, <PostSkeletonItem />, <PostSkeletonItem/></div>;
+    const { posts,hasMoreItems } = this.state;
     return (
       <PostsWrapper>
         <div
@@ -50,21 +69,19 @@ export class Posts extends React.Component {
             this.props.isFeatured && "is-featured"
           )}
         >
-          <div className="items-wrap flex">
             <InfiniteScroll
               pageStart={0}
-              loadMore={this.loadItems.bind(this)}
-              hasMore={this.state.hasMoreItems}
-              loader={loader}>
+              loadMore={this.loadingData}
+              hasMore={hasMoreItems}
+              loader={loader}
+              threshold={800}>
 
-              <div className="tracks">
+              <div className="items-wrap flex">
                 {!!posts && posts.length !== 0
-                  ? posts.map(item => <PostMinItem key={item.id} item={item} />)
-                  : [<PostSkeletonItem key={1} />, <PostSkeletonItem key={2} />, <PostSkeletonItem key={3} />, <PostSkeletonItem key={4} />, <PostSkeletonItem key={5} />, <PostSkeletonItem key={6} />]
+                  && posts.map(item => <PostMinItem key={item.id} item={item} />)
                 }
               </div>
             </InfiniteScroll>
-          </div>
         </div>
         <div className="section-load-more">
           <div className="load-more" style={{ "display": "inline-block" }}>
@@ -79,13 +96,12 @@ Posts.propTypes = {
   isFeatured: PropTypes.bool.isRequired,
   authorId: PropTypes.number,
   tagId: PropTypes.number,
-  getMainPosts: PropTypes.func.isRequired
 };
 
-function mapStateToProps(state, props) {
-  return {
-    posts: state.datas.posts
-  }
-}
+// function mapStateToProps(state, props) {
+//   return {
+//     posts: state.datas.posts
+//   }
+// }
 
-export default connect(mapStateToProps, { getMainPosts })(Posts);
+export default connect(null, { })(Posts);
