@@ -17,6 +17,11 @@ namespace ReactBlog.Core.Entities
         [StringLength(maximumLength:100)]
         public string Name { get; set; }
 
+        public string Image { get; set; }
+
+        [StringLength(maximumLength:1000)]
+        public string Description { get; set; }
+
         public virtual ICollection<TagPost> TagPosts { get; set; }
 
     }

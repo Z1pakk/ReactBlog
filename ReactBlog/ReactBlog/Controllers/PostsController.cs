@@ -34,6 +34,17 @@ namespace ReactBlog.Controllers
             return Ok(topPosts);
         }
 
+
+        /// <summary>
+        /// Get all posts sorted by likes
+        /// </summary>
+        /// <param name="page">Number for skip elements</param>
+        /// /// <param name="countItems">Request count posts for response</param>
+        /// <returns> List of posts for mail page </returns>
+        /// <response code="200"> Successed response.  </response>
+        /// <reponse code="400"> Return errors </reponse>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
         [HttpGet("mainPosts")]
         public async Task<IActionResult> GetMainPosts(int page = 1,int countItems = 5)
         {

@@ -26,6 +26,7 @@ const AuthorsWrapper = styled.div`
         background-color: #eaedf6;
         background-image: linear-gradient(20deg,#e2e5ed,#f1f4f4);
     }
+    
     .page-author-wrap {
         box-sizing: border-box;
         min-width: 277px;
@@ -52,7 +53,6 @@ const AuthorsWrapper = styled.div`
         padding: 15px 30px;
     }
     .page-author-wrap p {
-        width: 95%;
         padding: 15px 30px;
     }
     .page-author-wrap.is-cover-image {
@@ -69,6 +69,16 @@ const AuthorsWrapper = styled.div`
             margin: 0 auto 10vh;
             padding: 0;
         }
+    }
+    h2.pending{
+        margin:15px 30px ;
+        padding:0px ;
+        font-size:30px;
+    }
+    p.pending{
+        margin:6px 30px 3px 30px;
+        padding:0px ;
+        font-size:10px;
     }
 `;
 

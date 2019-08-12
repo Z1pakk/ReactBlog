@@ -5,12 +5,10 @@ import { Link } from "react-router-dom";
 import cutWords from "../../common/functions/cutWords";
 import { getAuthorsAndOthers } from "../../common/functions/getAuthors";
 import Moment from "react-moment";
-import { themes } from "../../common/consts/themes"
+import { themes } from "../../common/consts/themes";
+import { isUrl } from "../../common/functions/isUrl";
 
-function isUrl(s) {
-  var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-  return regexp.test(s);
-}
+
 export class PostMinItem extends React.Component {
   render() {
     const {
@@ -79,27 +77,19 @@ export class PostMinItem extends React.Component {
 PostMinItem.propTypes = {
   item: PropTypes.shape({
     image: PropTypes.string,
-
     authors:PropTypes.arrayOf(PropTypes.shape({
       userName:PropTypes.string.isRequired,
       name:PropTypes.string.isRequired,
     }).isRequired).isRequired,
-
     title:PropTypes.string.isRequired,
-
     datePost:PropTypes.string.isRequired,
-
     postLink:PropTypes.string.isRequired,
-
     id:PropTypes.number.isRequired,
-
     tags:PropTypes.arrayOf(PropTypes.shape({
       id:PropTypes.number.isRequired,
       name:PropTypes.string.isRequired,
     }).isRequired).isRequired,
-
     color:PropTypes.string,
-
   }).isRequired,
   
 };

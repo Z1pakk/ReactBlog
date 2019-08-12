@@ -1,15 +1,10 @@
-import { TOP_POSTS_GET,MAIN_POSTS_GET } from "../types";
+import { TOP_POSTS_GET } from "../types";
 import api from "../api";
 
 
 export const gettedTopPosts = (res) => ({
     type: TOP_POSTS_GET,
     topPosts:res
-});
-
-export const gettedMainPosts = (res) => ({
-    type: MAIN_POSTS_GET,
-    data:res
 });
 
 export const getTopPosts = (countItems) => dispatch => {

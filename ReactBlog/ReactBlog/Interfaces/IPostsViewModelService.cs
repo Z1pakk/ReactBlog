@@ -8,8 +8,6 @@ namespace ReactBlog.Interfaces
 {
     public interface IPostsViewModelService
     {
-        // TODO: Add method which return featured posts for carousel and method which return all posts
-
         Task<IEnumerable<PostItemViewModel>> TopPosts(int itemsPage = 5);
         Task<PostsViewModel> MainPosts(int page = 1, int countItems=8);
     }

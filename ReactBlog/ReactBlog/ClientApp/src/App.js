@@ -10,7 +10,7 @@ import NavBar from "./components/NavBar/NavBar";
 import { GlobalWrapper, FooterWrapper } from "./common/styled/App/App.style";
 import Footer from "./components/NavBar/Footer";
 import HomePage from "./components/pages/HomePage";
-import AuthorsPage from "./components/pages/AuthorsPage";
+import AuthorsPage from "./components/Authors/AuthorsPage";
 
 const PostPage=React.lazy(()=>import("./components/pages/PostPage"))
 const AuthorPage=React.lazy(()=>import("./components/pages/AuthorPage"))

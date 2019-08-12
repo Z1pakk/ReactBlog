@@ -783,11 +783,9 @@ h6 {
       display: none;
     }
     .pending{
-      background-color: #e4eaf0 !important;
-      color: #e4eaf0 !important;
       user-select: none;
       animation-name: skeletonAnimation;
-      animation-duration: 2.5s;
+      animation-duration: 1.5s;
       animation-iteration-count: infinite;
       animation-timing-function: linear;
     }

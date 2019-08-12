@@ -36,7 +36,7 @@ namespace ReactBlog.Infrastructure.Data
                         );
                         isCanSaveChanges = true;
                     }
-                    if (!blogContext.Tags.Any(t => t.Name == "Featured"))
+                    if (!blogContext.Tags.Any())
                     {
                         blogContext.Tags.AddRange(
                             GetPreconfiguredTags()
@@ -52,20 +52,38 @@ namespace ReactBlog.Infrastructure.Data
                     }
                     if (!blogContext.Users.Any())
                     {
+                        Faker<ApplicationUser> fakerUsers = new Faker<ApplicationUser>()
+                            .RuleFor(u => u.FirstName, f => f.Name.FirstName())
+                            .RuleFor(u => u.LastName, f => f.Name.LastName())
+                            .RuleFor(u => u.UserName, (f, u) => f.Internet.UserName(u.FirstName, u.LastName))
+                            .RuleFor(u => u.IsPromotions, f => f.Random.Bool())
+                            .RuleFor(u => u.Address, f => f.Address.City())
+                            .RuleFor(u => u.DetailedInfo, f => f.Lorem.Sentences(4, ". "))
+                            .RuleFor(u => u.Image, f => f.Image.PicsumUrl().OrNull(f,0.45f))
+                            .RuleFor(u => u.Email, (f, u) => f.Internet.Email(u.FirstName, u.LastName));
                         ApplicationUser user = new ApplicationUser()
                         {
                             Email = "userexample@gmail.com",
                             UserName = "userexample@gmail.com",
                             FirstName = "User",
                             LastName = "Example",
-                            IsPromotions = false
+                            IsPromotions = false,
+                            Address = "Rivne",
+                            DetailedInfo = "Nec vero pietas adversus deos nec quanta is gratia debeatur sine explicatione naturae intellegi potest. Dic in quovis conventu te omnia facere, ne doleas."
                         };
-                        await usermanager.CreateAsync(
-                            user,
+
+                        var users = fakerUsers.Generate(30);
+                        //users.Add(user);
+
+                        foreach (var item in users)
+                        {
+                            await usermanager.CreateAsync(
+                            item,
                             "5632wlad"
                             );
-                        await usermanager.AddToRoleAsync(user, "Admin");
-                        await usermanager.AddToRoleAsync(user, "Teacher");
+                            await usermanager.AddToRoleAsync(item, "User");
+                        }
+                       
                         isCanSaveChanges = true;
                     }
                     if (!blogContext.Posts.Any())

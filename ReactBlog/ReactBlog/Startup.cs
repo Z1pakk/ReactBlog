@@ -46,12 +46,13 @@ namespace ReactBlog
             //Add general email template
             services.AddEmailTemplateSender();
 
-            //Seed the db if it is not have data
+            //Seed the db with identity tables if it is not have data
             CreateIdentityIfNotCreated(services);
 
             services.AddCors(op => op.AddPolicy("Cors", builder => { builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); }));
            
             // Change password policy
+
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -69,14 +70,19 @@ namespace ReactBlog
             });
 
 
+            //Dependency injection
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
             services.AddScoped(typeof(IPostsViewModelService), typeof(PostsViewModelService));
+            services.AddScoped(typeof(IAuthorsViewModelService), typeof(AuthorsViewModelService));
+            services.AddScoped(typeof(ITagsViewModelService), typeof(TagsViewModelService));
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddOptions();
 
             services.AddDbContext<BlogContext>(options => options.UseSqlServer(Configuration.GetConnectionString("BlogConnection")));
+
+            //Authentication with JWT
 
             services.AddAuthentication(options =>
             {

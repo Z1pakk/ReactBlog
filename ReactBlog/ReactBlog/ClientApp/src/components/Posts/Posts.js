@@ -40,8 +40,10 @@ export class Posts extends React.Component {
     }
   }
 
+  componentDidMount(){
+    this.loadingData(1);
+  }
   loadingData=(page)=>{
-    console.log("page:"+page)
     this.fetchData(page,9);
   }
 
@@ -58,7 +60,7 @@ export class Posts extends React.Component {
   }
 
   render() {
-    const loader = <div className="items-wrap flex"><PostSkeletonItem /><PostSkeletonItem /> <PostSkeletonItem/>, <PostSkeletonItem/>, <PostSkeletonItem />, <PostSkeletonItem/></div>;
+    const loader = <div className="items-wrap flex"><PostSkeletonItem /><PostSkeletonItem /><PostSkeletonItem/><PostSkeletonItem/><PostSkeletonItem /><PostSkeletonItem/></div>;
     const { posts,hasMoreItems } = this.state;
     return (
       <PostsWrapper>
@@ -69,19 +71,20 @@ export class Posts extends React.Component {
             this.props.isFeatured && "is-featured"
           )}
         >
+           {!!posts && posts.length !== 0
+                ? 
             <InfiniteScroll
-              pageStart={0}
+              pageStart={1}
               loadMore={this.loadingData}
-              hasMore={hasMoreItems}
-              loader={loader}
-              threshold={800}>
-
+              hasMore={hasMoreItems}>
               <div className="items-wrap flex">
-                {!!posts && posts.length !== 0
-                  && posts.map(item => <PostMinItem key={item.id} item={item} />)
+                {
+                  posts.map(item => <PostMinItem key={item.id} item={item} />)
                 }
               </div>
-            </InfiniteScroll>
+            </InfiniteScroll>:
+            loader
+                            }
         </div>
         <div className="section-load-more">
           <div className="load-more" style={{ "display": "inline-block" }}>
