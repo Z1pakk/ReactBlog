@@ -23,7 +23,7 @@ namespace ReactBlog.Core.Entities
 
         public bool? IsFeatured { get; set; }
 
-
+        public string Text { get; set; }
 
         [Required]
         public DateTimeOffset DateCreate { get; private set; } = DateTimeOffset.Now;

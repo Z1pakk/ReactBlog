@@ -9,10 +9,10 @@ import ThanksMessage from "./components/messages/ThanksMessage";
 import NavBar from "./components/NavBar/NavBar";
 import { GlobalWrapper, FooterWrapper } from "./common/styled/App/App.style";
 import Footer from "./components/NavBar/Footer";
-import HomePage from "./components/pages/HomePage";
-import AuthorsPage from "./components/Authors/AuthorsPage";
 
+const HomePage=React.lazy(()=>import("./components/pages/HomePage"))
 const PostPage=React.lazy(()=>import("./components/pages/PostPage"))
+const AuthorsPage=React.lazy(()=>import("./components/Authors/AuthorsPage"))
 const AuthorPage=React.lazy(()=>import("./components/pages/AuthorPage"))
 const TagsPage=React.lazy(()=>import("./components/Tags/TagsPage"))
 const TagPage=React.lazy(()=>import("./components/pages/TagPage"))

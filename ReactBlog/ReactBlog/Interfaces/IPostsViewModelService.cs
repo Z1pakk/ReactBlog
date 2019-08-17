@@ -10,5 +10,7 @@ namespace ReactBlog.Interfaces
     {
         Task<IEnumerable<PostItemViewModel>> TopPosts(int itemsPage = 5);
         Task<PostsViewModel> MainPosts(int page = 1, int countItems=8);
+
+        Task<PostDetailedItemViewModel> GetDetailedInfo(int id);
     }
 }

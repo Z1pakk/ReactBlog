@@ -51,5 +51,22 @@ namespace ReactBlog.Controllers
             var mainPosts = await _postsViewModelService.MainPosts(page,countItems);
             return Ok(mainPosts);
         }
+
+
+        /// <summary>
+        /// Get detailed info about tag
+        /// </summary>
+        /// <param name="id">Text for search tags</param>
+        /// <returns> Info for tag </returns>
+        /// <response code="200"> Successed response.  </response>
+        /// <reponse code="400"> Return errors </reponse>
+        [HttpGet("tag/{id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> GetDetailedInfo(int id)
+        {
+            var tag = await _postsViewModelService.GetDetailedInfo(id);
+            return Ok(tag);
+        }
     }
 }
