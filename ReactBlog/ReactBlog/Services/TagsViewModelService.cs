@@ -23,7 +23,8 @@ namespace ReactBlog.Services
             var topSpecififcation = new TopTagsSpecification(searchText,page,itemsPage);
 
             var items = await _tagsRepository.ListAsync(topSpecififcation);
-            bool isHasNext = await _tagsRepository.CountAsync(topSpecififcation) >= ((page - 1) * itemsPage) ? true : false;
+            topSpecififcation = new TopTagsSpecification(searchText, page+1, itemsPage);
+            bool isHasNext = await _tagsRepository.CountAsync(topSpecififcation) > 0 ? true : false;
             return new TagsViewModel() { Items = convertPosts(items), IsHasNext = isHasNext };
         }
 

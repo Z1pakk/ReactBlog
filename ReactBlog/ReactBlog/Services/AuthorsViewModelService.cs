@@ -26,8 +26,24 @@ namespace ReactBlog.Services
         {
             try
             {
-                var users = searchText!=null?_userManager.Users.Where(u =>(u.FirstName+" "+u.LastName).ToLower().StartsWith(searchText)|| u.FirstName.ToLower().StartsWith(searchText.ToLower()) || u.LastName.ToLower().StartsWith(searchText.ToLower()) || u.UserName.ToLower().StartsWith(searchText.ToLower())):_userManager.Users.Include(t=>t.PostAuthors);
-                var items = users.Skip((page - 1) * itemsPage).Take(itemsPage).ToList();
+                var users = searchText!=null?
+                    _userManager.Users.AsQueryable().Where(u =>(
+                    u.FirstName+" "+u.LastName).ToLower().StartsWith(searchText)
+                    || 
+                    u.FirstName.ToLower().StartsWith(searchText.ToLower()) 
+                    ||
+                    u.LastName.ToLower().StartsWith(searchText.ToLower()) 
+                    ||
+                    u.UserName.ToLower().StartsWith(searchText.ToLower()))
+                    :
+                    _userManager.Users;
+                var items = users
+                                //.OrderByDescending(t=>
+                                //    t.PostAuthors
+                                //        .AsQueryable().GroupBy(g=> new { g.AuthorId })
+                                //        .OrderByDescending(g=>g.Count()))
+                                    .Skip((page - 1) * itemsPage)
+                                    .Take(itemsPage).ToList();
                 return new TopAuthorsViewModel()
                 {
                     Items = convertToModel(items),

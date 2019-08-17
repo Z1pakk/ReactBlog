@@ -53,6 +53,11 @@ const TagsWrapper = styled.div`
 .page-tag-wrap.other {
     min-height: 30px;
 }
+h2.pending {
+    margin: 15px 30px;
+    padding: 0px;
+    font-size: 20px !important;
+}
 @media (max-width: 479px)
 {
     .section-page-tags {

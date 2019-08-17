@@ -18,5 +18,9 @@ export default {
   authors:{
     getTop:(searchText,page,countItems)=>
       axios.get(`/api/authors/topAuthors?searchText=${searchText}&page=${page}&countItems=${countItems}`).then(res=>res.data),
+  },
+  tags:{
+    getTop:(searchText,page,countItems)=>
+    axios.get(`/api/tags/topTags?searchText=${searchText}&page=${page}&countItems=${countItems}`).then(res=>res.data),
   }
 };

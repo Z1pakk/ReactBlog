@@ -1,7 +1,6 @@
 import React from "react";
 import AuthorsWrapper from "../../common/styled/Authors/AuthorsWrapper.style";
 import classNames from "classnames";
-import Loader from "../../common/Loader";
 import { debounce } from 'lodash';
 import AuthorsItem from "./AuthorsItem";
 import AuthorsSkeletonItem from "./AuthorsSkeletonItem";
@@ -15,29 +14,6 @@ export class AuthorsPage extends React.Component {
         error: null,
         authors: [],
         hasMoreItems: true
-        // authors: [
-        //     {
-        //         image: "https://nurui.fueko.net/content/images/2018/12/ao-275953-unsplash.jpg",
-        //         name: "Vlad Shusmkiy",
-        //         description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ",
-        //         link: "vlad"
-        //     },
-        //     {
-        //         name: "Vlad Shusmkiy",
-        //         description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ",
-        //         link: "vlad2"
-        //     },
-        //     {
-        //         name: "Vlad Shusmkiy",
-        //         description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ",
-        //         link: "vlad2"
-        //     },
-        //     {
-        //         name: "Vlad Shusmkiy",
-        //         description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ",
-        //         link: "vlad2"
-        //     }
-        // ]
     }
     componentDidMount() {
         this.fetchData(1);

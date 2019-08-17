@@ -14,7 +14,7 @@ import AuthorsPage from "./components/Authors/AuthorsPage";
 
 const PostPage=React.lazy(()=>import("./components/pages/PostPage"))
 const AuthorPage=React.lazy(()=>import("./components/pages/AuthorPage"))
-const TagsPage=React.lazy(()=>import("./components/pages/TagsPage"))
+const TagsPage=React.lazy(()=>import("./components/Tags/TagsPage"))
 const TagPage=React.lazy(()=>import("./components/pages/TagPage"))
 
 export class App extends React.Component {

@@ -31,7 +31,7 @@ namespace ReactBlog.Controllers
         [HttpGet("topTags")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> GetTopTags(string searchText = "", int page = 1, int countItems = 5)
+        public async Task<IActionResult> GetTopTags(string searchText = "", int page = 1, int countItems = 36)
         {
             var topTags = await _tagsViewModelService.GetTags(searchText, page, countItems);
             return Ok(topTags);
