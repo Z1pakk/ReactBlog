@@ -1,35 +1,13 @@
 import React from "react";
 import { connect } from "react-redux"
 import classnames from "classnames";
-import { PostsWrapper } from "../../common/styled/Posts/Posts.style";
+import { PostsWrapper } from "../../../common/styled/Posts/Posts.style";
 import PropTypes from "prop-types";
 import PostMinItem from "./PostMinItem";
-import { getMainPosts } from "../../actions/posts"
+import { getMainPosts } from "../../../actions/posts"
 import PostSkeletonItem from "./PostSkeletonItem";
 import InfiniteScroll from 'react-infinite-scroller';
 
-// const posts = [
-//   {
-//     id: 1,
-//     image: test1image,
-//     title:
-//       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-//     authors: [
-//       {
-//         login: "Z1pakk",
-//         name: "Vlad Shumskiy"
-//       },
-//       {
-//         login: "cuandi236316@gmail.com",
-//         name: "Andriy Shumskiy"
-//       }
-//     ],
-//     datePost: "2019-04-17",
-//     postLink: "superPost",
-//     tag: "Story",
-//     color: "orange"
-//   }
-// ];
 
 export class Posts extends React.Component {
   constructor(props) {
@@ -79,7 +57,7 @@ export class Posts extends React.Component {
               hasMore={hasMoreItems}>
               <div className="items-wrap flex">
                 {
-                  posts.map(item => <PostMinItem key={item.id} item={item} />)
+                  posts.map(item => <PostMinItem key={item.postId} item={item} />)
                 }
               </div>
             </InfiniteScroll>:
@@ -100,11 +78,5 @@ Posts.propTypes = {
   authorId: PropTypes.number,
   tagId: PropTypes.number,
 };
-
-// function mapStateToProps(state, props) {
-//   return {
-//     posts: state.datas.posts
-//   }
-// }
 
 export default connect(null, { })(Posts);

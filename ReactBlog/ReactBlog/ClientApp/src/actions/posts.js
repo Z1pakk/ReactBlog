@@ -23,3 +23,12 @@ export const getMainPosts = (page,countItems)  => {
         catch(err=>reject(new Error("Error")))
     });
 };
+
+export const getPost=(id)=>{
+    return new Promise((resolve, reject) => {
+        api.posts.getPost(id).then(res=>{
+            resolve(res);
+        }).
+        catch(err=>reject(new Error("Error")))
+    });
+}

@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import { isUrl } from "../../common/functions/isUrl";
+import { isUrl } from "../../../common/functions/isUrl";
 
 
 export class TagItem extends React.Component {

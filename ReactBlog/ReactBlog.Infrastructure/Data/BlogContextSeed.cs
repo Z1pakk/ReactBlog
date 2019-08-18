@@ -73,7 +73,7 @@ namespace ReactBlog.Infrastructure.Data
                         };
 
                         var users = fakerUsers.Generate(30);
-                        //users.Add(user);
+                        users.Add(user);
 
                         foreach (var item in users)
                         {

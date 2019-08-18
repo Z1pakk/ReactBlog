@@ -42,11 +42,23 @@ namespace ReactBlog.Services
         {
             MainPostsSpecification mainSpecification = new MainPostsSpecification(null,null);
             var list=await _postsRepository.ListAsync(mainSpecification);
-            var tempNextPost = list
-            PostMinItemViewModel nextPost=new PostMinItemViewModel()
-            {
 
-            }
+            var tempNextPost = await _postsRepository.NextElement(mainSpecification,id);
+            PostMinItemViewModel nextPost = tempNextPost != null ? new PostMinItemViewModel()
+            {
+                PostId = tempNextPost.Id,
+                Color = tempNextPost.ColorOf?.Name,
+                Image = Uri.IsWellFormedUriString(tempNextPost.Image, UriKind.Absolute) ? tempNextPost.Image : tempNextPost.Image,
+                Title = tempNextPost.Title
+            } : null;
+            var tempPrevPost = await _postsRepository.PrevElement(mainSpecification, id);
+            PostMinItemViewModel prevPost = tempPrevPost!=null ? new PostMinItemViewModel()
+            {
+                PostId = tempPrevPost.Id,
+                Color = tempPrevPost.ColorOf?.Name,
+                Image = Uri.IsWellFormedUriString(tempPrevPost.Image, UriKind.Absolute) ? tempPrevPost.Image : tempPrevPost.Image,
+                Title = tempPrevPost.Title
+            } : null;
 
             var item = await _postsRepository.GetByIdAsync(id);
             return new PostDetailedItemViewModel()
@@ -71,11 +83,8 @@ namespace ReactBlog.Services
                 IsFeatured = item.IsFeatured.HasValue && item.IsFeatured.Value == true ? true : false,
                 CountLikes = item.PostLikes.Count,
                 Text = item.Text,
-                NextPost = new PostMinItemViewModel()
-                        {
-                            PostId
-                        }
-
+                NextPost = nextPost,
+                PrevPost= prevPost
             };
 
         }

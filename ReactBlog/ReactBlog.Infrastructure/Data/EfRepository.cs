@@ -33,6 +33,32 @@ namespace ReactBlog.Infrastructure.Data
             return await _dbContext.Set<T>().ToListAsync();
         }
 
+        public async Task<T> NextElement(ISpecification<T> spec, int id)
+        {
+            try
+            {
+                var items = await ApplySpecification(spec).ToListAsync();
+                return items[items.IndexOf(items.Find(t => t.Id == id)) + 1] ?? null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public async Task<T> PrevElement(ISpecification<T> spec, int id)
+        {
+            try
+            {
+                var items = await ApplySpecification(spec).ToListAsync();
+                return items[items.IndexOf(items.Find(t => t.Id == id)) - 1] ?? null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).ToListAsync();

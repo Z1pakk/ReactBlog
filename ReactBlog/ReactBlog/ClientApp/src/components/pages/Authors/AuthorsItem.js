@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import defaultImage from "../../common/consts/defaultImage"
+import defaultImage from "../../../common/consts/defaultImage"
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import { isUrl } from "../../common/functions/isUrl";
+import { isUrl } from "../../../common/functions/isUrl";
 
 
 export class AuthorsItem extends React.Component {

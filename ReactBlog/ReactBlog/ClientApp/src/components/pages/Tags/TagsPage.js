@@ -1,10 +1,10 @@
 import React from "react";
-import TagsWrapper from "../../common/styled/Tags/TagsWrapper.style"
+import TagsWrapper from "../../../common/styled/Tags/TagsWrapper.style"
 import { debounce } from 'lodash';
 import classNames from "classnames";
 import TagItem from "./TagItem";
 import TagSkeletonItem from "./TagSkeletonItem";
-import { getTopTags } from "../../actions/tags";
+import { getTopTags } from "../../../actions/tags";
 import InfiniteScroll from 'react-infinite-scroller';
 
 export class TagsPage extends React.Component {

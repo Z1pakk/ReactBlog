@@ -13,6 +13,7 @@
     "jsonwebtoken": "^8.5.1",
     "lightense-images": "^1.0.8",
     "lodash": "^4.17.15",
+    "medium-zoom": "^1.0.4",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",

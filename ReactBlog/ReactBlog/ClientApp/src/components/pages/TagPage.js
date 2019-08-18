@@ -1,6 +1,6 @@
 import React from "react";
 import TagWrapper from "../../common/styled/Tags/TagWrapper.style";
-import Posts from "../Posts/Posts";
+import Posts from "./Posts/Posts";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 

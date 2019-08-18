@@ -1,107 +1,72 @@
 import React from "react";
-import { PostWrapper } from "../../common/styled/Posts/Post.style.js"
+import { PostWrapper } from "../../common/styled/Posts/Post.style"
 import Moment from "react-moment";
 import { getAuthors } from "../../common/functions/getAuthors";
-import test1image from "../../testImages/test1.jpg";
+import PostSkeletonItem from "./PostSkeletonItem";
 import { Link } from "react-router-dom";
 import timeToRead from "../../common/functions/timeToRead";
 import classnames from "classnames";
-import Lightense from 'lightense-images';
-import { themesPosts,themes } from "../../common/consts/themes"
+import PropTypes from "prop-types";
+import { isUrl } from "../../common/functions/isUrl";
+import mediumZoom from 'medium-zoom'
+import { themesPosts, themes } from "../../common/consts/themes";
 import {
     FacebookShareButton,
     TwitterShareButton,
-  } from 'react-share';
+} from 'react-share';
 import Clipboard from 'react-clipboard.js';
+import { getPost } from "../../actions/posts";
 
 function createMarkup(text) {
-    return {__html: text};
-  }
+    return { __html: text };
+}
 export class PostPage extends React.Component {
-    state = {
-        post: {
-            id: 1,
-            image: test1image,
-            //fullImage:true,
-            title:
-                "Lorem ipsum dolor sit amet, wad dawd aw da adwd",
-            authors: [
-                {
-                    login: "Z1pakk",
-                    name: "Vlad Shumskiy",
-                    photo: test1image,
-                    description: "Lorem ipsum dolor sit amet, consectetur adipiscing eli"
-                },
-                {
-                    login: "cuandi236316@gmail.com",
-                    name: "Andriy Shumskiy",
-                    photo: "https://nurui.fueko.net/content/images/2018/12/marat-gilyadzinov-417074.jpg",
-                    description: "sed do eiusmod tempor incididunt ut labore et dolore magna aliq"
-                },
-                {
-                    login: "cuandi236316@gmail.com",
-                    name: "Andriy Shumskiy",
-                    photo: "https://nurui.fueko.net/content/images/2018/12/marat-gilyadzinov-417074.jpg",
-                    description: "sed do eiusmod tempor incididunt ut labore et dolore magna aliq"
-                },
-            ],
-            datePost: "2019-04-17",
-            postLink: "superPost",
-            tags: ["Story", "Education", "Natural", "Featured"],
-            color: "purple",
-            text: "<p>Lorem ipsum dolor</p> <blockquote>"+
-            "<p>Commentarios quosdam, inquam, Aristotelios, quos hic sciebam esse, veni ut auferrem, quos legerem, dum essem otiosus.Reicietur etiam Carneades, nec ulla de summo bono ratio aut voluptatis non dolendive particeps aut honestatis expers probabitur.</p>"+
-            "</blockquote><a href='#'>Aristotelios</a> <ul>"+
-            "<li>A quibus propter discendi cupiditatem esse peragratas.</li>"+
-            "<li>Quod si ita est, omnes semper beatos esse sapientes</li>"+
-            "<li>Hic Speusippus, hic Xenocrates</li>"+
-            "<li>Sed id ne cogitari quidem potest quale sit, ut non repugnet ipsum sibi</li>"+
-            "<li>Nihilne te delectat umquam te igitur, Torquate</li>"+
-            "</ul> <h3 id='utinamquidemdicerentaliumaliobeatioremiamruinasvideresnonautemhocigitur'>Utinam quidem dicerent alium alio beatiorem. Iam ruinas videres. Non autem hoc, igitur.</h3> sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Magna sit amet purus gravida quis blandit turpis cursus in. Enim lobortis scelerisque fermentum dui faucibus. Pulvinar proin gravida hendrerit lectus a. Volutpat maecenas volutpat blandit aliquam etiam erat. Pretium vulputate sapien nec sagittis aliquam malesuada. Proin fermentum leo vel orci porta non. Sit amet risus nullam eget felis eget nunc. Nam libero justo laoreet sit amet. Et tortor consequat id porta nibh. Lacus luctus accumsan tortor posuere. Molestie at elementum eu facilisis sed odio morbi quis. Vestibulum rhoncus est pellentesque elit ullamcorper dignissim cras tincidunt. Hac habitasse platea dictumst quisque sagittis purus sit amet volutpat. Justo nec ultrices dui sapien eget. A iaculis at erat pellentesque adipiscing commodo elit at. Adipiscing diam donec adipiscing tristique risus nec feugiat in. Cras ornare arcu dui vivamus arcu felis bibendum ut. <p><img src='https://images.unsplash.com/photo-1440330033336-7dcff4630cef?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=afccd1a742ed4a5f04f53a9a25535445' alt='A New York City street in Midtown with trees and skyscrapers on either side' /><br /></p>",
-            nextPost:{
-                color:"red",
-                //image:"https://images.unsplash.com/photo-1522230411790-91c3a622f42e?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=b412750fc34c8827c898cde59ea880b0",
-                title:"ed do eiusmod tempor incididunt u",
-                postLink:"tempNext",
-            },
-            prevPost:{
-                //color:"green",
-                postLink:"tempPrev",
-                //image:"https://images.unsplash.com/photo-1522230411790-91c3a622f42e?ixlib=rb-0.3.5&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ&amp;s=b412750fc34c8827c898cde59ea880b0",
-                title:"ed do eiusmod tempor incididunt u"
-                
-            }
+    constructor(props){
+        super(props);
+
+        this.state={
+            postId:props.match.params.id,
+            post:null
         }
+        
     }
-    componentDidMount(){
-        Lightense(".post-wrap img", {
-            time: 300,
-            padding: 60,
-            offset: 30,
-            keyboard: true,
-            cubicBezier: 'cubic-bezier(.2, 0, .1, 1)',
-            background: 'rgb(255, 255, 255)',
-            zIndex: 999
-        });
+    componentDidMount() {
+        this.fetchData(this.state.postId);
+
+       
     }
-    componentWillUnmount(){
-        var elem = document.querySelector('.lightense-backdrop');
-        elem.parentNode.removeChild(elem);
-    }
+    componentDidUpdate(prevProps, prevState) {
+        console.log(prevProps.match.params.id);
+        if (prevProps.match.params.id !== this.props.match.params.id) {
+            window.scrollTo(0, 0);
+            this.setState({
+                post:null
+            })
+            this.fetchData(this.props.match.params.id);
+        }
+      }
     
+    fetchData=(id)=>{
+        getPost(id).then((res) => {
+            this.setState({
+                post: res
+            });
+            mediumZoom('.post-wrap img')
+        })
+    }
     render() {
         const { post } = this.state;
-        var authorsJSX = getAuthors(post.authors);
+        var authorsJSX =!!post && getAuthors(post.authors);
         return (
-            <PostWrapper className={classnames(!!themesPosts[post.color] && themesPosts[post.color],!!post.fullImage&&"tag-hash-full-image")}>
-                {/* {this.props.match.params.name} */}
-                <div className={classnames("section-featured ",(post.tags.indexOf("Featured")!== -1&&!!post.image) ?"is-featured-image":"no-featured-image")}>
-                <div className="featured-image" style={{"backgroundImage": "url("+post.image+")"}}></div>
+            !!!post ? <PostSkeletonItem />:
+            <PostWrapper className={classnames(!!themesPosts[post.color] && themesPosts[post.color], !!post.fullImage && "tag-hash-full-image")}>
+                <div className={classnames("section-featured ", !!post.image ? "is-featured-image" : "no-featured-image")}>
+                    <div className="featured-image" style={{ "backgroundImage": "url(" + (isUrl(post.image)?post.image:("api/files/PostHeaderImages/"+post.image)) + ")" }}></div>
                     <div className="featured-wrap flex">
                         <div className="featured-content">
                             <div className="tags-wrap">
                                 {
-                                    post.tags.indexOf("Featured") !== -1 &&
+                                    post.isFeatured &&
                                     <span className="featured-label global-tag">
                                         <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M22.9712403,8.05987765 L16.2291373,8.05987765 L12.796794,0.459688839 C12.5516266,-0.153229613 11.4483734,-0.153229613 11.0806223,0.459688839 L7.64827899,8.05987765 L0.906176009,8.05987765 C0.538424938,8.05987765 0.170673866,8.30504503 0.0480901758,8.6727961 C-0.0744935148,9.04054717 0.0480901758,9.40829825 0.293257557,9.65346563 L5.31918887,14.3116459 L3.11268244,22.4021694 C2.99009875,22.7699205 3.11268244,23.1376716 3.48043351,23.382839 C3.72560089,23.6280063 4.21593565,23.6280063 4.46110303,23.5054227 L11.9387082,19.2149935 L19.4163133,23.5054227 C19.538897,23.6280063 19.6614807,23.6280063 19.906648,23.6280063 C20.1518154,23.6280063 20.2743991,23.5054227 20.5195665,23.382839 C20.7647339,23.1376716 20.8873176,22.7699205 20.8873176,22.4021694 L18.6808111,14.3116459 L23.7067424,9.65346563 C23.9519098,9.40829825 24.0744935,9.04054717 23.9519098,8.6727961 C23.7067424,8.30504503 23.3389914,8.05987765 22.9712403,8.05987765 Z">
@@ -109,19 +74,16 @@ export class PostPage extends React.Component {
                                         </svg>
                                         <span>Featured</span></span>
                                 }
-                                {post.tags.map(item => {
-                                    if (item != "Featured") {
-                                        return <Link className="post-tag global-tag" to={`/tag/${item}`}>{item}</Link>
-                                    }
+                                {post.tags.map(item =>
+                                    <Link key={item.id} className="post-tag global-tag" to={`/tag/${item.id}`}>{item.name}</Link>)
                                 }
-                                )}
                             </div>
                             <h1 className="white">{post.title}</h1>
                             <div className="item-meta white">
                                 <span>by </span>
                                 {authorsJSX}
                                 &nbsp;
-                                 <Moment fromNow>{post.datePost}</Moment>
+                                 <Moment fromNow>{post.dateOfCreate}</Moment>
                                 <span className="reading-time">
                                     <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M10.1907692,24 C4.5625628,24 0,19.4374372 0,13.8092308 C0,8.18102433 4.5625628,3.61846154 10.1907692,3.61846154 C15.8189757,3.61846154 20.3815385,8.18102433 20.3815385,13.8092308 C20.3815385,19.4374372 15.8189757,24 10.1907692,24 Z M10.1907692,22 C14.7144062,22 18.3815385,18.3328677 18.3815385,13.8092308 C18.3815385,9.28559383 14.7144062,5.61846154 10.1907692,5.61846154 C5.6671323,5.61846154 2,9.28559383 2,13.8092308 C2,18.3328677 5.6671323,22 10.1907692,22 Z" id="Oval"></path><path d="M7.53230769,2.32923077 C6.98002294,2.32923077 6.53230769,1.88151552 6.53230769,1.32923077 C6.53230769,0.776946019 6.98002294,0.329230769 7.53230769,0.329230769 L12.9225711,0.329230769 C13.4748559,0.329230769 13.9225711,0.776946019 13.9225711,1.32923077 C13.9225711,1.88151552 13.4748559,2.32923077 12.9225711,2.32923077 L7.53230769,2.32923077 Z" id="Line-2"></path><path d="M13.2928932,9.29289322 C13.6834175,8.90236893 14.3165825,8.90236893 14.7071068,9.29289322 C15.0976311,9.68341751 15.0976311,10.3165825 14.7071068,10.7071068 L10.897876,14.5163376 C10.5073517,14.9068618 9.87418674,14.9068618 9.48366245,14.5163376 C9.09313816,14.1258133 9.09313816,13.4926483 9.48366245,13.102124 L13.2928932,9.29289322 Z" id="Line"></path>
@@ -134,14 +96,14 @@ export class PostPage extends React.Component {
                     </div>
                 </div>
                 <div className="section-post wrap">
-                    <div dangerouslySetInnerHTML={createMarkup(post.text)} className={classnames("post-wrap",!!!post.image &&"no-image")}>
+                    <div dangerouslySetInnerHTML={createMarkup(post.text)} className={classnames("post-wrap", !!!post.image && "no-image")}>
                     </div>
-                    <div className={classnames("section-post-authors post-authors flex", post.authors.length===1&&"post-author-single first",post.authors.length===2&&"post-author-single post-author-double")}>
+                    <div className={classnames("section-post-authors post-authors flex", post.authors.length === 1 && "post-author-single first", post.authors.length === 2 && "post-author-single post-author-double")}>
                         <div className="author-label">
                             <span>{post.authors.length > 1 ? "THIS POST WAS A COLLABORATION BETWEEN" : "Read more posts by this author"}</span>
                         </div>
-                        {post.authors.map(item =>
-                            <div className="author-wrap flex">
+                        {!!post && !!post.authors && post.authors.map(item =>
+                            <div key={item.userName} className="author-wrap flex">
                                 <Link to={`/author/${item.login}`} className="item-link-overlay"></Link>
                                 <div className="author-profile-image" style={{ "backgroundImage": "url(" + item.photo + ")" }}></div>
                                 <div className="author-content">
@@ -167,30 +129,37 @@ export class PostPage extends React.Component {
                 </div>
                 <aside className="section-prev-next">
                     <div className="prev-next-wrap">
-                        {!!post.nextPost&&
-                            <Link to={`/post/${post.nextPost.postLink}`} className={classnames("prev-post post",!!post.nextPost.color&&themes[post.nextPost.color],!!post.nextPost.image&&"is-image")}>
-                                {!!post.nextPost.image&&<div className="prev-next-image" style={{"backgroundImage": "url("+post.nextPost.image+")"}}></div>}                        
+                        {!!post.prevPost &&
+                            <Link to={`/post/${post.prevPost.postId}`} className={classnames("prev-post post", !!post.prevPost.color && themes[post.prevPost.color], !!post.prevPost.image && "is-image")}>
+                                {!!post.prevPost.image && <div className="prev-next-image" style={{ "backgroundImage": "url(" + (isUrl(post.prevPost.image)?post.prevPost.image:("api/files/PostHeaderImages/"+post.prevPost.image)) + ")" }}></div>}
                                 <section className="prev-next-title">
                                     <h5>Newer Post</h5>
+                                    <h3>{post.prevPost.title}</h3>
+                                </section>
+                            </Link>
+                        }
+                        {!!post.nextPost &&
+                            <Link to={`/post/${post.nextPost.postId}`} className={classnames("next-post post", !!post.nextPost.color && themes[post.nextPost.color], !!post.nextPost.image && "is-image")}>
+                                {!!post.nextPost.image && <div className="prev-next-image" style={{ "backgroundImage": "url(" + (isUrl(post.nextPost.image)?post.nextPost.image:("api/files/PostHeaderImages/"+post.nextPost.image)) + ")" }}></div>}
+                                <section className="prev-next-title">
+                                    <h5>Older Post</h5>
                                     <h3>{post.nextPost.title}</h3>
                                 </section>
                             </Link>
                         }
-                         {!!post.prevPost&&
-                            <Link to={`/post/${post.prevPost.postLink}`} className={classnames("next-post post",!!post.prevPost.color&&themes[post.prevPost.color],!!post.prevPost.image&&"is-image")}>
-                                 {!!post.prevPost.image&&<div className="prev-next-image" style={{"backgroundImage": "url("+post.prevPost.image+")"}}></div>}
-                                <section className="prev-next-title">
-                                    <h5>Older Post</h5>
-                                    <h3>{post.prevPost.title}</h3>
-                                </section>
-                            </Link>
-                         }
                     </div>
                 </aside>
             </PostWrapper>
-                );
-            }
-        }
-        
-        
-        export default PostPage;
+        );
+    }
+}
+
+PostPage.propTypes = {
+    match: PropTypes.shape({
+        params: PropTypes.shape({
+            id: PropTypes.string.isRequired
+        }).isRequired
+    }).isRequired
+}
+
+export default PostPage;

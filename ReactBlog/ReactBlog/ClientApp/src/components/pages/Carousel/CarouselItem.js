@@ -2,8 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
 import PropTypes from "prop-types";
-import cutWords from "../../common/functions/cutWords";
-import { getAuthors } from "../../common/functions/getAuthors";
+import cutWords from "../../../common/functions/cutWords";
+import { getAuthors } from "../../../common/functions/getAuthors";
 
 export class CarouselItem extends React.Component {
   

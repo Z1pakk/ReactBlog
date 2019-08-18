@@ -22,7 +22,7 @@ const getAuthorsAndOthers = function(authors) {
   for (let i = 0; i < authors.length; i++) {
     const item = authors[i];
     authorsJSX.push(
-      <Link key={i} to={`/author/${item.userName}`}>
+      <Link key={item.userName} to={`/author/${item.userName}`}>
         {item.name}&nbsp;
       </Link>
     );

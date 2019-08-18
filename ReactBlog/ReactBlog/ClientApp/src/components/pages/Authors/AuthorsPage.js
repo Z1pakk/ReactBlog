@@ -1,10 +1,10 @@
 import React from "react";
-import AuthorsWrapper from "../../common/styled/Authors/AuthorsWrapper.style";
+import AuthorsWrapper from "../../../common/styled/Authors/AuthorsWrapper.style";
 import classNames from "classnames";
 import { debounce } from 'lodash';
 import AuthorsItem from "./AuthorsItem";
 import AuthorsSkeletonItem from "./AuthorsSkeletonItem";
-import { getTopAuthors } from "../../actions/authors"
+import { getTopAuthors } from "../../../actions/authors"
 import InfiniteScroll from 'react-infinite-scroller';
 
 

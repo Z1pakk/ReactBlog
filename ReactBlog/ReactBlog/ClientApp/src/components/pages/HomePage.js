@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 // import * as actions from "../../actions/auth";
-import Carousel from "../Carousel/Carousel";
-import Posts from "../Posts/Posts";
+import Carousel from "./Carousel/Carousel";
+import Posts from "./Posts/Posts";
 
 export class HomePage extends React.Component {
   render() {

@@ -54,19 +54,19 @@ namespace ReactBlog.Controllers
 
 
         /// <summary>
-        /// Get detailed info about tag
+        /// Get detailed info about post
         /// </summary>
-        /// <param name="id">Text for search tags</param>
-        /// <returns> Info for tag </returns>
+        /// <param name="id">Id of post</param>
+        /// <returns> Info about post </returns>
         /// <response code="200"> Successed response.  </response>
         /// <reponse code="400"> Return errors </reponse>
-        [HttpGet("tag/{id}")]
+        [HttpGet("post/{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         public async Task<IActionResult> GetDetailedInfo(int id)
         {
-            var tag = await _postsViewModelService.GetDetailedInfo(id);
-            return Ok(tag);
+            var post = await _postsViewModelService.GetDetailedInfo(id);
+            return Ok(post);
         }
     }
 }

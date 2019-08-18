@@ -2,11 +2,11 @@ import React from "react";
 import classnames from "classnames";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import cutWords from "../../common/functions/cutWords";
-import { getAuthorsAndOthers } from "../../common/functions/getAuthors";
+import cutWords from "../../../common/functions/cutWords";
+import { getAuthorsAndOthers } from "../../../common/functions/getAuthors";
 import Moment from "react-moment";
-import { themes } from "../../common/consts/themes";
-import { isUrl } from "../../common/functions/isUrl";
+import { themes } from "../../../common/consts/themes";
+import { isUrl } from "../../../common/functions/isUrl";
 
 
 export class PostMinItem extends React.Component {
@@ -63,7 +63,7 @@ export class PostMinItem extends React.Component {
           </div>
           <div className="tags">
             {tags.map(item=>
-              <Link className="primary-tag global-tag white" to={`/tag/${item.name}`}>
+              <Link key={item.id} className="primary-tag global-tag white" to={`/tag/${item.name}`}>
                 {item.name}
               </Link>
             )}
@@ -82,9 +82,8 @@ PostMinItem.propTypes = {
       name:PropTypes.string.isRequired,
     }).isRequired).isRequired,
     title:PropTypes.string.isRequired,
-    datePost:PropTypes.string.isRequired,
-    postLink:PropTypes.string.isRequired,
-    id:PropTypes.number.isRequired,
+    dateOfCreate:PropTypes.string.isRequired,
+    postId:PropTypes.number.isRequired,
     tags:PropTypes.arrayOf(PropTypes.shape({
       id:PropTypes.number.isRequired,
       name:PropTypes.string.isRequired,

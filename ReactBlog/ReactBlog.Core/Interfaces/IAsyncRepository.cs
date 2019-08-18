@@ -16,5 +16,7 @@ namespace ReactBlog.Core.Interfaces
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task<int> CountAsync(ISpecification<T> spec);
+        Task<T> NextElement(ISpecification<T> spec,int id);
+        Task<T> PrevElement(ISpecification<T> spec, int id);
     }
 }

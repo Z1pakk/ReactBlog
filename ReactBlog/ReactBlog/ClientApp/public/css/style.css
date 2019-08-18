@@ -151,13 +151,18 @@ ul {
 }
 .pending{
   background-color: #bdc3c7 !important;
-  color: #bdc3c7;
+  color: #bdc3c7 !important;
   user-select: none;
   animation-name: skeletonAnimation;
   animation-duration: 2.5s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
+h1.pending{
+  padding-top:0px !important;
+  margin-top:20px !important;
+}
+
 h2.pending{
   padding-top:0px !important;
   margin-top:20px !important;

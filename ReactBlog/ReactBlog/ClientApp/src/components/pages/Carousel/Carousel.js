@@ -1,10 +1,10 @@
 import React from "react";
 import Flickity from "react-flickity-component";
-import { CarouselWrapper } from "../../common/styled/Home/Carousel.style";
+import { CarouselWrapper } from "../../../common/styled/Home/Carousel.style";
 import CarouselItem from "../Carousel/CarouselItem";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getTopPosts } from "../../actions/posts"
+import { getTopPosts } from "../../../actions/posts"
 import CarouselSkeletonItem from "./CarouselSkeletonItem";
 
 const flickityOptions = {
