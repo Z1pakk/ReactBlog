@@ -31,9 +31,8 @@ export class PostPage extends React.Component {
         
     }
     componentDidMount() {
-        this.fetchData(this.state.postId);
-
-       
+        window.scrollTo(0, 0);
+        this.fetchData(this.state.postId); 
     }
     componentDidUpdate(prevProps, prevState) {
         console.log(prevProps.match.params.id);
