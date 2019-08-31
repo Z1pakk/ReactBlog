@@ -20,7 +20,7 @@ import { getPost } from "../../actions/posts";
 function createMarkup(text) {
     return { __html: text };
 }
-export class PostPage extends React.Component {
+export class PostInfoPage extends React.Component {
     constructor(props){
         super(props);
 
@@ -153,7 +153,7 @@ export class PostPage extends React.Component {
     }
 }
 
-PostPage.propTypes = {
+PostInfoPage.propTypes = {
     match: PropTypes.shape({
         params: PropTypes.shape({
             id: PropTypes.string.isRequired
@@ -161,4 +161,4 @@ PostPage.propTypes = {
     }).isRequired
 }
 
-export default PostPage;
+export default PostInfoPage;

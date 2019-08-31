@@ -15,14 +15,30 @@ namespace ReactBlog.Services
     public class AuthorsViewModelService : IAuthorsViewModelService
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IPostsViewModelService _postsViewModelService;
 
-        public AuthorsViewModelService(UserManager<ApplicationUser> userManager)
+        public AuthorsViewModelService(UserManager<ApplicationUser> userManager,IPostsViewModelService postsViewModelService)
         {
             _userManager = userManager;
+            _postsViewModelService = postsViewModelService;
         }
 
+        public AuthorDetailedViewModel Author(string userName)
+        {
+            var user = _userManager.Users.FirstOrDefault(t => t.UserName == userName);
+            AuthorDetailedViewModel model = user != null ? new AuthorDetailedViewModel()
+            {
+                UserName = user.UserName,
+                Description = user.DetailedInfo,
+                Image = user.Image,
+                Name = $"{user.FirstName} {user.LastName}",
+                Address=user.Address,
+            } : null;
 
-        public async Task<TopAuthorsViewModel> Authors(string searchText = "", int page = 1, int itemsPage = 5)
+            return model;
+        }
+
+        public TopAuthorsViewModel Authors(string searchText = "", int page = 1, int itemsPage = 5)
         {
             try
             {

@@ -39,6 +39,9 @@ namespace ReactBlog.Infrastructure.Data
 
             builder.Entity<PostLike>()
             .HasKey(c => new { c.PostId, c.UserId });
+
+            builder.Entity<Tag>()
+            .HasIndex(c => c.Name).IsUnique();
             // TODO: Configure entities
             //builder.Entity<User>(ConfigureUser);
         }

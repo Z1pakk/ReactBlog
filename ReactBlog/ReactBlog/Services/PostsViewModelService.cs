@@ -29,9 +29,9 @@ namespace ReactBlog.Services
             return convertPosts(items);
         }
 
-        public async Task<PostsViewModel> MainPosts(int page = 1, int countItems = 8)
+        public async Task<PostsViewModel> MainPosts(int tagId,int page = 1, int countItems = 9, string authorUserName=null)
         {
-            var mainSpecification = new MainPostsSpecification(page, countItems);
+            var mainSpecification = new MainPostsSpecification(tagId, page, countItems,authorUserName);
 
             var items = await _postsRepository.ListAsync(mainSpecification);
             bool isHasNext = await _postsRepository.CountAsync(mainSpecification) >= ((page - 1) * countItems) ? true : false;
@@ -40,7 +40,7 @@ namespace ReactBlog.Services
 
         public async Task<PostDetailedItemViewModel> GetDetailedInfo(int id)
         {
-            MainPostsSpecification mainSpecification = new MainPostsSpecification(null,null);
+            MainPostsSpecification mainSpecification = new MainPostsSpecification(0,null,null,null);
             var list=await _postsRepository.ListAsync(mainSpecification);
 
             var tempNextPost = await _postsRepository.NextElement(mainSpecification,id);

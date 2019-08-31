@@ -11,11 +11,11 @@ import { GlobalWrapper, FooterWrapper } from "./common/styled/App/App.style";
 import Footer from "./components/NavBar/Footer";
 
 const HomePage=React.lazy(()=>import("./components/pages/HomePage"))
-const PostPage=React.lazy(()=>import("./components/pages/PostPage"))
+const PostInfoPage=React.lazy(()=>import("./components/pages/PostInfoPage"))
 const AuthorsPage=React.lazy(()=>import("./components/pages/Authors/AuthorsPage"))
-const AuthorPage=React.lazy(()=>import("./components/pages/AuthorPage"))
+const AuthorInfoPage=React.lazy(()=>import("./components/pages/AuthorInfoPage"))
 const TagsPage=React.lazy(()=>import("./components/pages/Tags/TagsPage"))
-const TagPage=React.lazy(()=>import("./components/pages/TagPage"))
+const TagInfoPage=React.lazy(()=>import("./components/pages/TagInfoPage"))
 
 export class App extends React.Component {
   render() {
@@ -24,11 +24,11 @@ export class App extends React.Component {
           <NavBar />
           <div className="main">
             <Route path="/" exact component={HomePage} />
-            <Route path="/post/:id" component={PostPage} />
+            <Route path="/post/:id" component={PostInfoPage} />
             <Route path="/authors" component={AuthorsPage} />
-            <Route path="/author/:name" component={AuthorPage} />
+            <Route path="/author/:userName" component={AuthorInfoPage} />
             <Route path="/tags" component={TagsPage} />
-            <Route path="/tag/:name" component={TagPage} />
+            <Route path="/tag/:name" component={TagInfoPage} />
 
             <GuestRoute path="/login" component={LoginPage} />
             <GuestRoute path="/signup" component={SignUpPage} />

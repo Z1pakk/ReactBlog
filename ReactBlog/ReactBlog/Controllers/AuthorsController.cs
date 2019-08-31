@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ReactBlog.Interfaces;
+using ReactBlog.ViewModels.Authors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,14 +26,30 @@ namespace ReactBlog.Controllers
         /// <param name="countItems">Request count posts for response</param>
         /// <returns> List of authors for authorsPage </returns>
         /// <response code="200"> Successed response.  </response>
-        /// <reponse code="400"> Return errors </reponse>
+        /// <response code="400"> Return errors </response>
         [HttpGet("topAuthors")]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> GetTopAuthors(string searchText="",int page=1,int countItems = 5)
+        public IActionResult GetTopAuthors(string searchText="",int page=1,int countItems = 5)
         {
-            var topAuthors = await _authorsViewModelService.Authors(searchText, page,countItems);
+            var topAuthors = _authorsViewModelService.Authors(searchText, page,countItems);
             return Ok(topAuthors);
+        }
+
+        /// <summary>
+        /// Get detailed info about author
+        /// </summary>
+        /// <param name="userName">Username of author</param>
+        /// <returns> Object which have a information about author </returns>
+        /// <response code="200"> Successed response.  </response>
+        /// <response code="400"> Return errors </response>
+        [HttpGet("author/{userName}")]
+        [ProducesResponseType(200,Type=typeof(AuthorDetailedViewModel))]
+        [ProducesResponseType(400)]
+        public IActionResult GetDetailedInfo(string userName)
+        {
+            var author = _authorsViewModelService.Author(userName);
+            return Ok(author);
         }
     }
 }

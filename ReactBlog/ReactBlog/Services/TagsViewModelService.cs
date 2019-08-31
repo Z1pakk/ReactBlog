@@ -28,6 +28,22 @@ namespace ReactBlog.Services
             return new TagsViewModel() { Items = convertPosts(items), IsHasNext = isHasNext };
         }
 
+        public async Task<TagDetailedViewModel> Tag(string tagName)
+        {
+            var tag = await _tagsRepository.ListAllAsync();
+            var tempmodel = tag.FirstOrDefault(t => t.Name == tagName);
+            TagDetailedViewModel model = new TagDetailedViewModel()
+            {
+                Id = tempmodel.Id,
+                Name = tempmodel.Name,
+                CountPosts = tempmodel.TagPosts.Count,
+                Description = tempmodel.Description,
+                Image=tempmodel.Image
+                
+            };
+            return model;
+        }
+
         private IEnumerable<TagItemViewModel> convertPosts(IReadOnlyList<Tag> items)
         {
             return items.Select(i => new TagItemViewModel()

@@ -13,8 +13,10 @@ export class Posts extends React.Component {
   constructor(props) {
     super(props);
     this.state={
-      posts:[],
-      hasMoreItems:true
+      posts:null,
+      hasMoreItems:true,
+      author:props.authorUserName?props.authorUserName:"",
+      tagId:props.tagId?props.tagId:0
     }
   }
 
@@ -22,13 +24,15 @@ export class Posts extends React.Component {
     this.loadingData(1);
   }
   loadingData=(page)=>{
-    this.fetchData(page,9);
+    const { author,tagId }=this.state;
+    this.fetchData(page,9,author,tagId);
   }
 
-  fetchData=(page,countToTake)=>{
-    getMainPosts(page,countToTake).then(res=>
+  fetchData=(page,countToTake,author,tagId)=>{
+    getMainPosts(page,countToTake,author,tagId).then(res=>
       {
-        const items=this.state.posts.concat(res.items);
+        const { posts }=this.state;
+        const items=!!posts?posts.concat(res.items):res.items;
         console.log(items);
         this.setState({
           posts:items,
@@ -49,7 +53,7 @@ export class Posts extends React.Component {
             this.props.isFeatured && "is-featured"
           )}
         >
-           {!!posts && posts.length !== 0
+           {!!posts
                 ? 
             <InfiniteScroll
               pageStart={1}
@@ -64,10 +68,6 @@ export class Posts extends React.Component {
             loader
                             }
         </div>
-        <div className="section-load-more">
-          <div className="load-more" style={{ "display": "inline-block" }}>
-          </div>
-        </div>
       </PostsWrapper>
     );
   }
@@ -75,7 +75,7 @@ export class Posts extends React.Component {
 
 Posts.propTypes = {
   isFeatured: PropTypes.bool.isRequired,
-  authorId: PropTypes.number,
+  authorUserName: PropTypes.string,
   tagId: PropTypes.number,
 };
 

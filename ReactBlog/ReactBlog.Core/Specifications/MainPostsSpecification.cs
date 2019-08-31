@@ -8,7 +8,13 @@ namespace ReactBlog.Core.Specifications
 {
     public class MainPostsSpecification: BaseSpecification<Post>
     {
-        public MainPostsSpecification(int? page,int? countTake) : base(i=>true)
+        public MainPostsSpecification(int tagId,int? page,int? countTake, string authorUserName) 
+            : base(i=>
+                (!string.IsNullOrEmpty(authorUserName)
+                 ?i.PostAuthors.Where(t=>t.AuthorOf.UserName== authorUserName).Count()!=0:
+                (tagId!=0
+                 ?i.TagPosts.Where(t=>t.TagId==tagId).Count()!=0:true))
+            )
         {
             // TODO: Order by likes
             ApplyOrderByDescending(t => t.PostLikes.Count);

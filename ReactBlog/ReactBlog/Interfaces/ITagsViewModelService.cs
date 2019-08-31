@@ -9,5 +9,6 @@ namespace ReactBlog.Interfaces
     public interface ITagsViewModelService
     {
         Task<TagsViewModel> GetTags(string searchText = "", int page = 1, int itemsPage = 8);
+        Task<TagDetailedViewModel> Tag(string tagName);
     }
 }

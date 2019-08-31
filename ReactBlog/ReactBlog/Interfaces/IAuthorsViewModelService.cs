@@ -8,6 +8,7 @@ namespace ReactBlog.Interfaces
 {
     public interface IAuthorsViewModelService
     {
-        Task<TopAuthorsViewModel> Authors(string searchText,int page = 1, int itemsPage = 5);
+        TopAuthorsViewModel Authors(string searchText,int page = 1, int itemsPage = 5);
+        AuthorDetailedViewModel Author(string userName);
     }
 }

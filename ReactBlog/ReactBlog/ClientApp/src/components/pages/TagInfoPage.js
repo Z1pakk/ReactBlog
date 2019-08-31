@@ -3,6 +3,7 @@ import TagWrapper from "../../common/styled/Tags/TagWrapper.style";
 import Posts from "./Posts/Posts";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+import { getTagInfo } from "../../actions/tags";
 
 export class TagPage extends React.Component {
     constructor(props){
@@ -10,15 +11,21 @@ export class TagPage extends React.Component {
 
         this.state={
             tagName:props.match.params.name,
-            tag:{
-                id:1,
-                image:"https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjExNzczfQ",
-                name:"Nature",
-                countPosts:32,
-                description:"Non dolere, inquam, istud quam vim habeat postea viderouid ei reliquisti, nisi te, quoquo modo loqueretur, intellegere, quid diceret."
-            }
+            tag:{}
         }
         
+    }
+    componentDidMount(){
+        window.scrollTo(0, 0);
+        this.fetchData(this.state.tagName);
+    }
+
+    fetchData=(tagName)=>{
+        getTagInfo(tagName).then((res) => {
+            this.setState({
+                tag: res
+            });
+        })
     }
     render() {
         const { tag }=this.state;
@@ -34,7 +41,7 @@ export class TagPage extends React.Component {
                     <h2>{tag.description}</h2>
                 </div>
             </TagWrapper>
-            <Posts isFeatured={false} tagId={tag.id} />
+            {tag.id && <Posts isFeatured={false} tagId={tag.id} />}
             </div>
         );
     }
