@@ -1,4 +1,6 @@
 import React from 'react';
+import 'antd/dist/antd.css';
+import './style.css';
 import { Route } from "react-router";
 import LoginPage from "./components/pages/LoginPage";
 import DashboardPage from "./components/pages/DashboardPage";
@@ -9,6 +11,7 @@ import ThanksMessage from "./components/messages/ThanksMessage";
 import NavBar from "./components/NavBar/NavBar";
 import { GlobalWrapper, FooterWrapper } from "./common/styled/App/App.style";
 import Footer from "./components/NavBar/Footer";
+import { BackTop } from 'antd';
 
 const HomePage=React.lazy(()=>import("./components/pages/HomePage"))
 const PostInfoPage=React.lazy(()=>import("./components/pages/PostInfoPage"))
@@ -23,6 +26,7 @@ export class App extends React.Component {
       <GlobalWrapper>
           <NavBar />
           <div className="main">
+            <BackTop />
             <Route path="/" exact component={HomePage} />
             <Route path="/post/:id" component={PostInfoPage} />
             <Route path="/authors" component={AuthorsPage} />

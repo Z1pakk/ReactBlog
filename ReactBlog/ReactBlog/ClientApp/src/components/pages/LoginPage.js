@@ -10,9 +10,7 @@ class LoginPage extends React.Component {
 
   render() {
     return (
-      <div>
         <LoginForm submit={this.submit} />
-      </div>
     );
   }
 }

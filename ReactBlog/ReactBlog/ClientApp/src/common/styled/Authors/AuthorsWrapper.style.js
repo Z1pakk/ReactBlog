@@ -1,9 +1,8 @@
 import styled from "styled-components";
 
 const AuthorsWrapper = styled.div`
-    .section-page-tags, .section-page-authors {
+    .section-page-authors {
         margin: 0 auto 16vh;
-        padding: 0 85px;
         animation: slide-top .7s cubic-bezier(.250,.460,.450,.940) both;
     }
     .page-authors-wrap {
