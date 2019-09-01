@@ -64,7 +64,7 @@ export class LoginForm extends Component {
         const { getFieldDecorator } = this.props.form;
         const { data, showPassword, errors, loading } = this.state;
         return (
-            <LoginFormWrapper>
+            <LoginFormWrapper className="login-wrap">
               <div className="flex wrap">
                 <div className="login-img" style={{ "backgroundImage": `url(${loginImg})` }} />
                 <div className="content">

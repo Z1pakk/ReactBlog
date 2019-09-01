@@ -1,1 +1,1 @@
-export const reCaptchaKey="6LeeFaoUAAAAABSGfp5O5OVzD1sXK3AemQefh9Fw"
+export const reCaptchaKey="6LcfELYUAAAAAKZd9LwJGC0rGzTWoSRDoc_NucqK"

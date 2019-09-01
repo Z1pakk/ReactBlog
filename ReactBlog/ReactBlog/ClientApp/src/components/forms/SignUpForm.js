@@ -5,6 +5,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { Button, Icon, Divider, Form, Input, Checkbox, Tooltip } from 'antd';
 import ReCAPTCHA from "react-google-recaptcha";
 import { init } from 'ityped'
+import { hasErrors,hasAllValues,checkNoSpaces } from '../../common/functions/validate';
 import { reCaptchaKey } from '../../config';
 import signUpImg from "../../testImages/signUp.jpg";
 
@@ -89,9 +90,10 @@ export class SignUpForm extends Component {
       data: { ...this.state.data, recaptchaToken: value }
     });
   };
+
   render() {
     const { data, loading, errors } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator,getFieldsError,getFieldsValue } = this.props.form;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -99,7 +101,7 @@ export class SignUpForm extends Component {
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 14 },
+        sm: { span: 16 },
       },
     };
     const tailFormItemLayout = {
@@ -115,7 +117,7 @@ export class SignUpForm extends Component {
       },
     };
     return (
-      <SignUpFormWrapper>
+      <SignUpFormWrapper className="login-wrap">
         <div className="flex wrap">
           <div className="login-img" style={{ "backgroundImage": `url(${signUpImg})` }} />
           <div className="content">
@@ -143,7 +145,7 @@ export class SignUpForm extends Component {
                 {...formItemLayout}
                 label={(
                   <span>
-                    Nickname&nbsp;
+                    User Name&nbsp;
                     <Tooltip title="What do you want other to call you?">
                       <Icon type="question-circle-o" />
                     </Tooltip>
@@ -152,11 +154,13 @@ export class SignUpForm extends Component {
                 hasFeedback
               >
                 {getFieldDecorator('userName', {
-                  rules: [{ required: true, message: 'Please input your nickname!', whitespace: true },
-                  { whitespace: true, message: 'NickName doesn\'t have a whitespace!' },
-                  { min: 4, message: 'Minimum lenght:4' }],
+                  rules: [
+                    { required: true, message: 'Please input your User Name!', whitespace: true },
+                    { min: 4, message: 'Minimum lenght: 4' },
+                    { validator: checkNoSpaces}
+                ],
                 })(
-                  <Input />
+                  <Input placeholder="Example: XipUserName" />
                 )}
               </FormItem>
               <FormItem
@@ -172,7 +176,33 @@ export class SignUpForm extends Component {
                     required: true, message: 'Please input your E-mail!',
                   }],
                 })(
-                  <Input />
+                  <Input placeholder="Example: xipnicks@gmail.com" />
+                )}
+              </FormItem>
+              <FormItem
+                {...formItemLayout}
+                label="First Name"
+                hasFeedback
+              >
+                {getFieldDecorator('firstName', {
+                  rules: [
+                    { required: true, message: 'Please input your First name!', whitespace: true }
+                ],
+                })(
+                  <Input placeholder="Example: Vlad" />
+                )}
+              </FormItem>
+              <FormItem
+                {...formItemLayout}
+                label="Last Name"
+                hasFeedback
+              >
+                {getFieldDecorator('lastName', {
+                  rules: [
+                    { required: true, message: 'Please input your Last name!', whitespace: true }
+                ],
+                })(
+                  <Input placeholder="Example: Shumskyi" />
                 )}
               </FormItem>
               <FormItem
@@ -191,7 +221,7 @@ export class SignUpForm extends Component {
                     validator: this.checkConfirm,
                   }],
                 })(
-                  <Input.Password />
+                  <Input.Password name="password" placeholder="Example: 123456" />
                 )}
               </FormItem>
               <FormItem
@@ -206,32 +236,43 @@ export class SignUpForm extends Component {
                     validator: this.checkPassword,
                   }],
                 })(
-                  <Input.Password onBlur={this.handleConfirmBlur} />
+                  <Input.Password name="cofirmPassword" placeholder="Example: 123456" onBlur={this.handleConfirmBlur} />
                 )}
               </FormItem>
 
-              <FormItem {...tailFormItemLayout}>
-              {getFieldDecorator('reCaptcha', {
-                  valuePropName: 'checked',
-                })(
                 <ReCAPTCHA
                   sitekey={reCaptchaKey}
                   ref={recaptchaRef}
-                  error="awdaw"
                   onChange={this.verifyCallback}
-                />)}
-              </FormItem>
+                  size="invisible"
+                />
 
               <FormItem {...tailFormItemLayout} style={{ marginBottom: 8 }}>
                 {getFieldDecorator('agreement', {
                   valuePropName: 'checked',
+                  initialValue:false
                 })(
-                  <Checkbox>I have read the <RouterLink to="/agreement">agreement</RouterLink></Checkbox>
+                  <Checkbox>I have read the&nbsp;
+                    <RouterLink to="/agreement">
+                      agreement
+                    </RouterLink>
+                  </Checkbox>
                 )}
               </FormItem>
              
               <FormItem {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit" className="extLogin">Sign Up</Button>
+                <Button 
+                  type="primary" 
+                  htmlType="submit" 
+                  className="extLogin"
+                  disabled={
+                            hasErrors(getFieldsError())
+                            ||
+                            !hasAllValues(getFieldsValue())
+                           }
+                >
+                    Sign Up
+                </Button>
               </FormItem>
             </Form>
 

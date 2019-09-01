@@ -63,15 +63,9 @@ const SignUpFormWrapper = styled.div`
         background-color: #CF4231;
         border-color: #CF4231;
     }
-    .additional-info{
-        font-size: .75rem;
-        margin-bottom: 0;
-        line-height: 1.5rem;
-        text-align:center;
-        a{
-            color: rgba(0,0,0,.87);
-            text-decoration: underline;
-        }
+    .ant-checkbox-wrapper a{
+        color: rgba(0,0,0,.87);
+        text-decoration: underline;
     }
     @keyframes blink {
         100% {
@@ -81,6 +75,12 @@ const SignUpFormWrapper = styled.div`
     @media(max-width:767px){
         .content{
             padding:0px !important;
+            flex: 1 0 100%;
+        }
+    }
+    @media (max-width: 1023px and min-width:768px) {
+        .content{
+            padding:0px 8rem !important;
             flex: 1 0 100%;
         }
     }
