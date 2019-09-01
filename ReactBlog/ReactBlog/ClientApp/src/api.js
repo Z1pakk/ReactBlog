@@ -7,7 +7,11 @@ export default {
     signup: model =>
       axios.post("/api/auth/register", model).then(res => res.data),
     confirmEmail: (userId, code) =>
-      axios.post(`/verify/email/${userId}/${code}`).then(res => res.data)
+      axios.post(`/api/auth/verify/email/${userId}/${code}`).then(res => res.data),
+    checkEmail:(email)=>
+      axios.get(`/api/account/checkEmail/${email}`).then(res=>res),
+    checkUserName:(userName)=>
+      axios.get(`/api/account/checkUserName/${userName}`).then(res=>res)
   },
   posts:{
     getTop:countItems=>
@@ -21,12 +25,12 @@ export default {
     getTop:(searchText,page,countItems)=>
       axios.get(`/api/authors/topAuthors?searchText=${searchText}&page=${page}&countItems=${countItems}`).then(res=>res.data),
     getAuthorInfo:(userName)=>
-      axios.get(`/api/authors/author/${userName}`),
+      axios.get(`/api/authors/author/${userName}`).then(res=>res.data),
   },
   tags:{
     getTop:(searchText,page,countItems)=>
       axios.get(`/api/tags/topTags?searchText=${searchText}&page=${page}&countItems=${countItems}`).then(res=>res.data),
     getTagInfo:(tagName)=>
-      axios.get(`/api/tags/tag/${tagName}`),
+      axios.get(`/api/tags/tag/${tagName}`).then(res=>res.data),
   }
 };

@@ -121,11 +121,11 @@ namespace ReactBlog.Controllers
                 {
                     var userRegistered = new ApplicationUser
                     {
-                        UserName = model.Email,
+                        UserName = model.UserName,
                         Email = model.Email,
                         FirstName = model.FirstName,
                         LastName = model.LastName,
-                        IsPromotions = model.Promotions
+                        IsPromotions = false
                     };
                     var result = await _userManager.CreateAsync(userRegistered, model.Password);
                     if (!result.Succeeded)
@@ -135,17 +135,17 @@ namespace ReactBlog.Controllers
                     }
                     else
                     {
-                        var user = await _userManager.FindByNameAsync(model.Email);
+                        //var user = await _userManager.FindByNameAsync(model.Email);
 
                         // Generate an email verification code
-                        var emailVerificationCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var emailVerificationCode = await _userManager.GenerateEmailConfirmationTokenAsync(userRegistered);
 
                         //Generate url for confirmation email
-                        var confirmationUrl = $"https://{Request.Host.Value}/confirmation?user={user.Id}&code={emailVerificationCode}";
+                        var confirmationUrl = $"https://{Request.Host.Value}/confirmation?user={userRegistered.Id}&code={emailVerificationCode}";
 
                         // Email to the user the verification code
                         ReactBlogEmailSender mailService = new ReactBlogEmailSender(_emailSender);
-                        await mailService.SendUserVerificationEmail(null, user.Email, confirmationUrl);
+                        await mailService.SendUserVerificationEmail(null, userRegistered.Email, confirmationUrl);
 
 
 
@@ -156,8 +156,10 @@ namespace ReactBlog.Controllers
                         var errors = CustomValidator.GetErrorsByIdentityResult(result);
                         return BadRequest(errors);
                     }
+                    transaction.Commit();
 
-                    return await this.LoginAsync(new LoginViewModel() { Email = model.Email, Password = model.Password });
+                    return Ok();
+                    //return await this.LoginAsync(new LoginViewModel() { Email = model.Email, Password = model.Password });
                 }
                 catch (Exception ex)
                 {

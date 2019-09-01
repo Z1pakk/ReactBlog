@@ -13,7 +13,7 @@ export const getTopTags = (searchText,page,countItems)  => {
 export const getTagInfo = (tagName)  => {
     return new Promise((resolve, reject) => {
         api.tags.getTagInfo(tagName).then(res=>{
-            resolve(res.data);
+            resolve(res);
         })
         .catch(err=>reject(new Error(err)))
     });

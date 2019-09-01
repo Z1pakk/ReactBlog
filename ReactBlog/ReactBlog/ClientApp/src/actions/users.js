@@ -3,18 +3,28 @@ import { userLoggedIn } from "./auth";
 import setAuthorizationToken from "../utils/setAuthorizationToken";
 import jwt from "jsonwebtoken";
 
-export const signup = data => dispatch =>
-  api.user.signup(data).then(res => {
-    const token = res.token;
-    localStorage.setItem("jwtToken", token);
-    setAuthorizationToken(token);
-    let jwtTokenDecode = jwt.decode(token);
-    dispatch(
-      userLoggedIn({
-        email: jwtTokenDecode.email,
-        isAdmin: jwtTokenDecode.isAdmin,
-        isTeacher: jwtTokenDecode.isTeacher,
-        isConfirmed: res.isConfirmed
-      })
-    );
+export const signup = data  =>{
+  return new Promise((resolve, reject) => {
+    api.user.signup(data).then(res => {
+      resolve();
+    })
+      .catch(err => reject(new Error(err)))
   });
+};
+
+export const checkEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    api.user.checkEmail(email).then(res => {
+      resolve(res.data);
+    })
+      .catch(err => reject(new Error(err)))
+  });
+};
+export const checkUserName = (userName) => {
+  return new Promise((resolve, reject) => {
+    api.user.checkUserName(userName).then(res => {
+      resolve(res.data);
+    })
+      .catch(err => reject(new Error(err)))
+  });
+};

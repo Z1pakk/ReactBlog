@@ -12,6 +12,11 @@ namespace ReactBlog.ViewModels
         [Required(ErrorMessage = "{0} can't be empty!")]
         [DataType(DataType.Text)]
         [StringLength(100, ErrorMessage = "You have entered more characters than necessary ({1})")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "{0} can't be empty!")]
+        [DataType(DataType.Text)]
+        [StringLength(100, ErrorMessage = "You have entered more characters than necessary ({1})")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "{0} can't be empty!")]
@@ -36,8 +41,8 @@ namespace ReactBlog.ViewModels
         [StringLength(30, ErrorMessage = "You have entered more characters than necessary ({1})")]
         public string ConfirmPassword { get; set; }
 
-
-        public bool Promotions { get; set; }
+        [Required]
+        public bool Agreement { get; set; }
 
         [Required]
         [RecaptchaValid]

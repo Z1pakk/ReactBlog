@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using ReactBlog.Helpers;
+using ReactBlog.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,7 +17,7 @@ namespace ReactBlog.CustomAttributes
             var client = new System.Net.WebClient();
 
             //TODO: Insert key in appsettings.json
-            string PrivateKey = "6LeeFaoUAAAAABEPoVUPfeYBQstamMWcu-DMZPMZ";
+            string PrivateKey = IoCContainer.Configuration["RecaptchaToken"];
             string requestComm = string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", PrivateKey, value.ToString());
             var GoogleReply = client.DownloadString(requestComm);
 
@@ -27,7 +28,7 @@ namespace ReactBlog.CustomAttributes
             }
             else
             {
-                return new ValidationResult("Error while veryfing recaptcha!");
+                return new ValidationResult(captchaResponse.ErrorCodes.FirstOrDefault());
             }
         }
        

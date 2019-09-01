@@ -13,7 +13,7 @@ export const getTopAuthors = (searchText,page,countItems)  => {
 export const getAuthorInfo = (userName)  => {
     return new Promise((resolve, reject) => {
         api.authors.getAuthorInfo(userName).then(res=>{
-            resolve(res.data);
+            resolve(res);
         })
         .catch(err=>reject(new Error(err)))
     });

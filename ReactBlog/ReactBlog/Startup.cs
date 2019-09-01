@@ -55,10 +55,10 @@ namespace ReactBlog
 
             services.Configure<IdentityOptions>(options =>
             {
-                options.Password.RequireDigit = false;
+                options.Password.RequireDigit = true;
                 options.Password.RequiredLength = 5;
                 options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = false;
             });
 
