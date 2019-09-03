@@ -7,8 +7,7 @@ export const signup = data  =>{
   return new Promise((resolve, reject) => {
     api.user.signup(data).then(res => {
       resolve();
-    })
-      .catch(err => reject(new Error(err)))
+    }).catch(err => reject(err))
   });
 };
 

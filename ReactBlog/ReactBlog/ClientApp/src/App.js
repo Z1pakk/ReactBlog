@@ -12,6 +12,7 @@ import NavBar from "./components/NavBar/NavBar";
 import { GlobalWrapper, FooterWrapper } from "./common/styled/App/App.style";
 import Footer from "./components/NavBar/Footer";
 import { BackTop } from 'antd';
+import ConfirmEmailPage from "./components/pages/ConfirmEmailPage";
 
 const HomePage=React.lazy(()=>import("./components/pages/HomePage"))
 const PostInfoPage=React.lazy(()=>import("./components/pages/PostInfoPage"))
@@ -33,6 +34,7 @@ export class App extends React.Component {
             <Route path="/author/:userName" component={AuthorInfoPage} />
             <Route path="/tags" component={TagsPage} />
             <Route path="/tag/:name" component={TagInfoPage} />
+            <Route path="/confirm" component={ConfirmEmailPage} />
 
             <GuestRoute path="/login" component={LoginPage} />
             <GuestRoute path="/signup" component={SignUpPage} />

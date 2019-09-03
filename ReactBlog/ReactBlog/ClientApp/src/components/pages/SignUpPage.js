@@ -7,7 +7,11 @@ import SignUpForm from "../forms/SignUpForm";
 
 export class SignUpPage extends Component {
   submit = data =>
-    this.props.signup(data).then(() => this.props.push("/dashboard"));
+      signup(data)
+        .then(() => this.props.push("/confirm"))
+        .catch((err)=> new Promise((resolve, reject) => {
+            return reject(err);
+        }));
   render() {
     return (
       <div>
@@ -23,7 +27,6 @@ SignUpPage.propTypes = {
 export default connect(
   null,
   {
-    signup,
     push
   }
 )(SignUpPage);

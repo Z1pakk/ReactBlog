@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 import SignUpFormWrapper from "../../common/styled/SignUpForm/SignUpFormWrapper.style.js";
 import { checkEmail, checkUserName } from "../../actions/users";
 import { Link as RouterLink } from "react-router-dom";
-import { Button, Icon, Divider, Form, Input, Checkbox, Tooltip } from 'antd';
+import { Button, Icon, Divider, Form, Input, Checkbox, Tooltip,Alert  } from 'antd';
 import ReCAPTCHA from "react-google-recaptcha";
 import { init } from 'ityped'
 import { hasErrors, hasAllValues, checkNoSpaces } from '../../common/functions/validate';
 import { reCaptchaKey } from '../../config';
 import signUpImg from "../../testImages/signUp.jpg";
+import { debounce } from 'lodash';
 
 const FormItem = Form.Item;
 
@@ -74,7 +75,7 @@ export class SignUpForm extends Component {
     callback();
   }
 
-  validateEmail = (rule, value, callback) => {
+  validateEmail = debounce((rule, value, callback) => {
     checkEmail(value).then(res => {
       if (res === true) {
         callback();
@@ -84,8 +85,8 @@ export class SignUpForm extends Component {
       }
     }
     ).catch(err => callback("Error while validate"));
-  }
-  validateUserName = (rule, value, callback) => {
+  }, 1000);
+  validateUserName = debounce((rule, value, callback) => {
     checkUserName(value).then(res => {
       if (res === true) {
         callback();
@@ -95,21 +96,20 @@ export class SignUpForm extends Component {
       }
     }
     ).catch(err => callback("Error while validate"));
-  }
+  },1000);
 
   verifyCallback = value => {
-    // Here you will get the final recaptchaToken!!!
-    this.setState({
-      
-    });
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
           this.setState({
             loading: true,
             data: {...values,recaptchaToken: value}
           });
-          console.log(this.state.data);
-          this.props.submit(this.state.data).catch(err => {
+          this.props.submit(this.state.data)
+            .then(data=>{
+              this.setState({ loading: false });
+            })
+            .catch(err => {
             this.setState({ errors: err.response.data, loading: false });
             recaptchaRef.current.reset();
           });
@@ -119,6 +119,7 @@ export class SignUpForm extends Component {
 
   render() {
     const { getFieldDecorator, getFieldsError, getFieldsValue } = this.props.form;
+    const { errors,loading }=this.state;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -165,7 +166,20 @@ export class SignUpForm extends Component {
               sign up with twitter
             </Button>
             <Divider>OR</Divider>
+           
             <Form onSubmit={this.handleSubmit}>
+              <FormItem>
+              {
+                errors.global && 
+                <Alert
+                  message="Error"
+                  description={ errors.global }
+                  type="error"
+                  showIcon
+                  closable
+                />
+              }
+              </FormItem>
               <FormItem
                 {...formItemLayout}
                 label={(
@@ -195,15 +209,16 @@ export class SignUpForm extends Component {
                 hasFeedback
               >
                 {getFieldDecorator('email', {
-                  rules: [{
-                    type: 'email', message: 'The input is not valid E-mail!',
-                  },
-                  {
-                    required: true, message: 'Please input your E-mail!',
-                  },
-                  {
-                    validator: this.validateEmail
-                  }
+                  rules: [
+                    {
+                      type: 'email', message: 'The input is not valid E-mail!',
+                    },
+                    {
+                      required: true, message: 'Please input your E-mail!',
+                    },
+                    {
+                      validator: this.validateEmail
+                    }
                   ],
                 })(
                   <Input placeholder="Example: xipnicks@gmail.com" />
@@ -299,7 +314,6 @@ export class SignUpForm extends Component {
 
               <FormItem {...tailFormItemLayout}>
                 <Button
-                  loading={!!this.state.loading}
                   type="primary"
                   htmlType="submit"
                   className="extLogin"
