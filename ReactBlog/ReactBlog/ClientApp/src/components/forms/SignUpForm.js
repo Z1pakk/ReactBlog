@@ -144,6 +144,12 @@ export class SignUpForm extends Component {
     };
     return (
       <SignUpFormWrapper className="login-wrap">
+        <ReCAPTCHA
+            sitekey={reCaptchaKey}
+            ref={recaptchaRef}
+            onChange={this.verifyCallback}
+            size="invisible"
+        />
         <div className="flex wrap">
           <div className="login-img" style={{ "backgroundImage": `url(${signUpImg})` }} />
           <div className="content">
@@ -267,11 +273,15 @@ export class SignUpForm extends Component {
                     required: true, message: 'Please input your password!',
                   },
                   {
-                    min: 5, message: 'Minimum lenght:5 characters'
+                    min: 5, message: 'Minimum lenght:5 characters!'
+                  },
+                  {
+                   pattern:"^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[#$^+=!*()@%&^\-]).{5,}$", message:"Must include 5 characters 1 digit and 1 special symbol!"
                   },
                   {
                     validator: this.checkConfirm,
-                  }],
+                  }
+                ],
                 })(
                   <Input.Password name="password" placeholder="Example: 123456" />
                 )}
@@ -292,12 +302,7 @@ export class SignUpForm extends Component {
                 )}
               </FormItem>
 
-              <ReCAPTCHA
-                sitekey={reCaptchaKey}
-                ref={recaptchaRef}
-                onChange={this.verifyCallback}
-                size="invisible"
-              />
+              
 
               <FormItem {...tailFormItemLayout} style={{ marginBottom: 8 }}>
                 {getFieldDecorator('agreement', {
@@ -315,8 +320,9 @@ export class SignUpForm extends Component {
               <FormItem {...tailFormItemLayout}>
                 <Button
                   type="primary"
-                  htmlType="submit"
                   className="extLogin"
+                  htmlType="submit"
+                  loading={loading}
                   disabled={
                     hasErrors(getFieldsError())
                     ||
