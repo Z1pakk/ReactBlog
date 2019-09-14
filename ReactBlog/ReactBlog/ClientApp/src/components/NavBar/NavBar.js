@@ -13,6 +13,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import classnames from "classnames";
 import links from "../../datas/links";
+import { connect } from "react-redux";
 // import { HamburgerMenu } from "react-hamburger-menu"
 
 export class NavBar extends Component {
@@ -59,7 +60,10 @@ export class NavBar extends Component {
               <ul className="nav-list">
                 {
                   links.map(item =>
-                    <li key={item.title} className="nav-list-item">
+                    {
+                    if((this.props.iAuthentificated&&!!!item.isGuest)||(!this.props.iAuthentificated&&(!!!item.isGuest&&!!!item.isAuthorize||!!item.isGuest)))
+                    {
+                    return(<li key={item.title} className="nav-list-item">
                       <NavLink
                         activeClassName="nav-link-active"
                         to={item.url}
@@ -72,7 +76,9 @@ export class NavBar extends Component {
                         {item.title}
                       </NavLink>
                       <span className="nav-dot"></span>
-                    </li>
+                    </li>)
+                    }
+                  }
                   )
                 }
                 <li className="nav-list-item search-open">
@@ -96,4 +102,10 @@ export class NavBar extends Component {
     );
   }
 }
-export default NavBar;
+function mapStateToProps(state) {
+  return {
+    iAuthentificated: !!state.user.email
+  };
+}
+
+export default connect(mapStateToProps)(NavBar);

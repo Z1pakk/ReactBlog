@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
 using ReactBlog.Core.Identity;
 using ReactBlog.Core.Interfaces;
@@ -73,14 +74,23 @@ namespace ReactBlog.Controllers
                 return BadRequest(errors);
             }
 
+            ApplicationUser user = await _userManager.FindByEmailAsync(credentials.Email);
             // TODO: Remember me option!
-            var result = await _signInManager.PasswordSignInAsync(credentials.Email, credentials.Password, false, false);
+            var result = await _signInManager.PasswordSignInAsync(user, credentials.Password, false, false);
             if (!result.Succeeded)
             {
-                var errors = await CustomValidator.GetErrorsBySignInResultAsync(result,_userManager, credentials.Email);
+                var errors = await CustomValidator.GetErrorsBySignInResultAsync(result, _userManager, credentials.Email);
                 return BadRequest(errors);
             }
-            var user = await _userManager.FindByEmailAsync(credentials.Email);
+            
+
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+            {
+                return BadRequest(new { global="Confirm you're account for login!" });
+            }
+
+           
+
             string token = await CreateTokenAsync(user);
             return Ok(new {token=token,isConfirmed=user.EmailConfirmed});
         }
@@ -139,9 +149,11 @@ namespace ReactBlog.Controllers
 
                         // Generate an email verification code
                         var emailVerificationCode = await _userManager.GenerateEmailConfirmationTokenAsync(userRegistered);
+                        byte[] tokenGeneratedBytes = Encoding.UTF8.GetBytes(emailVerificationCode);
+                        var codeEncoded = WebEncoders.Base64UrlEncode(tokenGeneratedBytes);
 
                         //Generate url for confirmation email
-                        var confirmationUrl = $"https://{Request.Host.Value}/confirmation?user={userRegistered.Id}&code={emailVerificationCode}";
+                        var confirmationUrl = $@"http://{Request.Host.Value}/confirmation/{userRegistered.Id}/{codeEncoded}";
 
                         // Email to the user the verification code
                         ReactBlogEmailSender mailService = new ReactBlogEmailSender(_emailSender);
@@ -169,9 +181,11 @@ namespace ReactBlog.Controllers
             }
 
         }
-        [HttpPost]
-        [Route("verify/email/{userId}/{emailToken}")]
-        public async Task<IActionResult> VerifyEmail(string userId,string emailToken)
+        [HttpGet("confirmation")]
+        [AllowAnonymous]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        public async Task<IActionResult> VerifyEmail(string userId, string token)
         {
             //Get the user
             var user = await _userManager.FindByIdAsync(userId);
@@ -179,19 +193,28 @@ namespace ReactBlog.Controllers
             //If user is null
             if (user == null)
             {
-                return BadRequest(new { error = "User not found" });
+                return BadRequest(new { error = "User not found!" });
             }
 
             //If we find the user ...
 
+            var codeDecodedBytes = WebEncoders.Base64UrlDecode(token);
+            var codeDecoded = Encoding.UTF8.GetString(codeDecodedBytes);
             //Verify the email token
-            var result=await _userManager.ConfirmEmailAsync(user, emailToken);
+            if(await _userManager.IsEmailConfirmedAsync(user))
+            {
+                return BadRequest(new { error = "Token is expired or account is already confirmed!" });
+            }
+            var result=await _userManager.ConfirmEmailAsync(user, codeDecoded);
             if (result.Succeeded)
                 return Ok();
 
             var errors = CustomValidator.GetErrorsByIdentityResult(result);
             return BadRequest(errors);
         }
+
+
+        // Token for login
 
         private async Task<string> CreateTokenAsync(ApplicationUser user)
         {

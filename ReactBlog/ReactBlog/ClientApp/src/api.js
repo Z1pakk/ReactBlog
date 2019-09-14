@@ -11,7 +11,9 @@ export default {
     checkEmail:(email)=>
       axios.get(`/api/account/checkEmail/${email}`).then(res=>res),
     checkUserName:(userName)=>
-      axios.get(`/api/account/checkUserName/${userName}`).then(res=>res)
+      axios.get(`/api/account/checkUserName/${userName}`).then(res=>res),
+    confirmEmail:(userId,token)=>
+      axios.get(`/api/auth/confirmation?userId=${userId}&token=${token}`).then(res=>res)
   },
   posts:{
     getTop:countItems=>

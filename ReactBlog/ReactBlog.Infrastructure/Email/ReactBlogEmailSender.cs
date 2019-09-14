@@ -34,14 +34,14 @@ namespace ReactBlog.Infrastructure.Email
                 ToEmail = email,
                 ToName = displayName
             },
-           IoCContainer.Configuration["SendGridSettings:SendGridTemplateKey"],
-           "Confirm Your Email Address",
-           "Tap the button below to confirm your email address. If you didn't create an account with ReactBlog, you can safely delete this email.",
-           "Do Something Sweet",
-           IoCContainer.Configuration["MyBlogSettings:SendEmailFromName"],
-           "If that doesn't work, copy and paste the following link in your browser:",
-           "awdwadaw",
-           verificationUrl);
+               IoCContainer.Configuration["SendGridSettings:SendGridTemplateKey"],
+               "Confirm Your Email Address",
+               "Tap the button below to confirm your email address. If you didn't create an account with ReactBlog, you can safely delete this email.",
+               "Do Something Sweet",
+               IoCContainer.Configuration["MyBlogSettings:SendEmailFromName"],
+               "If that doesn't work, copy and paste the following link in your browser:",
+               "awdwadaw",
+               verificationUrl);
         }
     }
 }

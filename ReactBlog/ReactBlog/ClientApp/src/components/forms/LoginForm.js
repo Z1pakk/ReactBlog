@@ -4,7 +4,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { init } from 'ityped'
 import { GoogleLogin } from "react-google-login";
 import LoginFormWrapper from "../../common/styled/LoginForm/LoginFormWrapper.style";
-import { Button, Icon, Divider, Form, Input, Checkbox  } from 'antd';
+import { Button, Icon, Divider, Form, Input, Checkbox,Alert  } from 'antd';
 import Validator from "validator";
 import loginImg from "../../testImages/login.jpg";
 const FormItem = Form.Item;
@@ -17,7 +17,7 @@ export class LoginForm extends Component {
         },
         loading: false,
         showPassword: false,
-        errors: {}
+        globalError:null
     };
     componentDidMount(){
       const typedText = document.querySelector('#typedText')
@@ -32,8 +32,31 @@ export class LoginForm extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
         if (!err) {
-            console.log('Received values of form: ', values);
-            this.props.history.push("/");
+            this.props.submit(values).catch(error => {
+                var result=error.response.data;
+                if(error.response.data["global"]){
+                    this.setState({
+                        globalError:error.response.data["global"]
+                    })
+                }
+                Object.keys(result)
+                        .forEach(
+                            function(key)
+                            { 
+                                result[key] = {
+                                    value:values[key],
+                                    errors:[new Error(result[key])]
+                                }
+                            }
+                        );
+                this.props.form.setFields(
+                    result
+                    // email:{
+                    //   value:values.email,
+                    //   errors: [new Error('forbid ha')],
+                    // }
+                  );
+              });
         }
         });
         // const errors = this.validate(this.state.data);
@@ -62,7 +85,7 @@ export class LoginForm extends Component {
     // };
     render() {
         const { getFieldDecorator } = this.props.form;
-        const { data, showPassword, errors, loading } = this.state;
+        const { globalError } = this.state;
         return (
             <LoginFormWrapper className="login-wrap">
               <div className="flex wrap">
@@ -88,6 +111,17 @@ export class LoginForm extends Component {
                     </Button>
                     <Divider>OR</Divider>
                     <Form onSubmit={this.handleSubmit}>
+                        <FormItem>
+                        {
+                            globalError &&
+                            <Alert
+                            message="Error"
+                            description={globalError}
+                            type="error"
+                            showIcon
+                            />
+                        }
+                        </FormItem>
                         <FormItem>
                             {getFieldDecorator('email', {
                             rules: [{ required: true, message: 'Please input your email!' },

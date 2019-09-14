@@ -116,6 +116,12 @@ ul {
 .search-input:focus, .subscribe-wrap .subscribe-email:focus {
   border-bottom-color: #2821fc;
 }
+.text-center{
+  text-align:center;
+}
+.p25vh{
+  padding: 25vh 0px;
+}
 .page-tag-image, .page-author-cover-image {
   position: absolute;
   z-index: -1;

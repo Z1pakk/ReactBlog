@@ -6,7 +6,8 @@ import { login } from "../../actions/auth";
 import { push } from "connected-react-router";
 class LoginPage extends React.Component {
   submit = data =>
-    this.props.login(data).then(() => this.props.push("/dashboard"));
+    this.props.login(data)
+      .then(() => this.props.push("/dashboard"));
 
   render() {
     return (

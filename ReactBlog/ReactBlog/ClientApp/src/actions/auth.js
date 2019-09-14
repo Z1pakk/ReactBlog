@@ -11,9 +11,6 @@ export const userLoggedOut = () => ({
   type: USER_LOGGED_OUT
 });
 
-export const confirmEmail = (userId, code) => dispatch => {
-  api.user.confirmEmail(userId, code).then(res => {});
-};
 
 export const login = credentials => dispatch =>
   api.user.login(credentials).then(res => {
@@ -35,6 +32,13 @@ export const logout = () => dispatch => {
   setAuthorizationToken(false);
   dispatch(userLoggedOut());
 };
-export const signup = () => dispatch => {
-  return true;
-};
+
+export const confirmEmail=(userId,token)=>{
+  return new Promise((resolve, reject) => {
+    api.user.confirmEmail(userId,token).then(res => {
+      resolve(res.data);
+    })
+      .catch(err => reject(err.response.data))
+  });
+  
+}
