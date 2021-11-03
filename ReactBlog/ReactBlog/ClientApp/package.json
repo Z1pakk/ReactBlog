@@ -37,7 +37,7 @@
     "redux-thunk": "^2.3.0",
     "rimraf": "^2.6.2",
     "styled-components": "^4.3.2",
-    "validator": "^11.0.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "ajv": "^6.0.0",
